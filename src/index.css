@@ -591,6 +591,54 @@ body::before {
 }
 
 /* ═══════════════════════════════════════════
+   MOBILE OPTIMIZATIONS
+   ═══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Larger touch targets */
+  .btn-viking {
+    min-height: 44px;
+    padding: 0.75rem 1.5rem;
+  }
+  
+  /* Better card spacing on mobile */
+  .card-hover {
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Improve readability */
+  body {
+    font-size: 15px;
+  }
+  
+  /* Better modal on mobile */
+  .glass-dark {
+    margin: 0.5rem;
+  }
+  
+  /* Hide decorative elements that clutter mobile */
+  .card-corner::before,
+  .card-corner::after {
+    display: none;
+  }
+  
+  /* Better grid on mobile */
+  .grid {
+    gap: 0.75rem;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+  .card-hover:hover {
+    transform: none;
+  }
+  
+  .btn-viking:hover {
+    transform: none;
+  }
+}
+
+/* ═══════════════════════════════════════════
    INVENTORY CARD STYLE
    ═══════════════════════════════════════════ */
 .card-inventory {

@@ -123,16 +123,48 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* Footer */}
       <footer className="border-t border-norse-gold/8 py-8 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <span className="text-norse-gold text-sm font-serif">{theme.rune}</span>
-              <span className="font-[Cinzel] text-norse-gold/60 text-xs">Хроники Города</span>
+          <div className="grid md:grid-cols-3 gap-6 mb-6">
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-norse-gold text-sm font-serif">{theme.rune}</span>
+                <span className="font-[Cinzel] text-norse-gold/60 text-xs">Хроники Города</span>
+              </div>
+              <p className="text-norse-muted/40 text-xs">
+                Социальная RPG-песочница на движке Valheim.
+              </p>
             </div>
-            <p className="text-norse-gold/20 text-[10px] font-serif tracking-[0.3em]">
-              ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ
-            </p>
+            <div>
+              <h4 className="text-norse-gold/60 text-xs font-semibold mb-3 uppercase tracking-wider">Сообщество</h4>
+              <div className="flex gap-3">
+                <a href="https://discord.gg/valheim" target="_blank" rel="noopener noreferrer" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-sm">
+                  Discord
+                </a>
+                <a href="https://t.me/valheim" target="_blank" rel="noopener noreferrer" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-sm">
+                  Telegram
+                </a>
+                <a href="#" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-sm">
+                  VK
+                </a>
+              </div>
+            </div>
+            <div>
+              <h4 className="text-norse-gold/60 text-xs font-semibold mb-3 uppercase tracking-wider">Навигация</h4>
+              <div className="flex flex-wrap gap-x-3 gap-y-1">
+                <Link to="/" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-xs">Главная</Link>
+                <Link to="/servers" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-xs">Серверы</Link>
+                <Link to="/wiki" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-xs">Вики</Link>
+                <Link to="/community" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-xs">Сообщество</Link>
+                <Link to="/shop" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-xs">Магазин</Link>
+              </div>
+            </div>
+          </div>
+          <div className="section-divider mb-4" />
+          <div className="flex flex-col md:flex-row items-center justify-between gap-2">
             <p className="text-norse-muted/30 text-[10px]">
               © 2026 Valheim MMO Portal
+            </p>
+            <p className="text-norse-gold/20 text-[10px] font-serif tracking-[0.3em]">
+              ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ
             </p>
           </div>
         </div>

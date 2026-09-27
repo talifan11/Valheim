@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useServerStatus } from '../hooks/useServerStatus';
+import { ServerModal } from '../components/ServerModal';
 
 export function ServersPage() {
   const { servers, totalPlayers, onlineServers, lastUpdate } = useServerStatus();
+  const [selectedServer, setSelectedServer] = useState<any>(null);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
@@ -38,7 +40,11 @@ export function ServersPage() {
       {/* Server List */}
       <div className="space-y-4">
         {servers.map((server, i) => (
-          <div key={i} className="glass-dark rounded-lg p-6 card-corner">
+          <div 
+            key={i} 
+            className="glass-dark rounded-lg p-6 card-corner cursor-pointer hover:border-norse-gold/30 transition-all"
+            onClick={() => setSelectedServer(server)}
+          >
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
@@ -122,6 +128,14 @@ export function ServersPage() {
       <div className="mt-4 text-center text-xs text-norse-muted/50">
         Последнее обновление: {lastUpdate.toLocaleTimeString('ru-RU')}
       </div>
+
+      {/* Server Modal */}
+      {selectedServer && (
+        <ServerModal 
+          server={selectedServer} 
+          onClose={() => setSelectedServer(null)} 
+        />
+      )}
     </div>
   );
 }

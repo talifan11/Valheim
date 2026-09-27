@@ -9,6 +9,7 @@ import { ServersPage } from './pages/ServersPage';
 import { WikiPage } from './pages/WikiPage';
 import { CommunityPage } from './pages/CommunityPage';
 import { ShopPage } from './pages/ShopPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
               <Route path="/wiki" element={<WikiPage />} />
               <Route path="/community" element={<CommunityPage />} />
               <Route path="/shop" element={<ShopPage />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Layout>
           <HUD />
