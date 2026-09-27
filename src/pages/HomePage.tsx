@@ -12,6 +12,11 @@ export function HomePage() {
     <div>
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+        {/* Poster image for performance */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center opacity-40"
+          style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1605000797499-95a51c526dae?w=1920&q=75)' }}
+        />
         <div className="video-container">
           <iframe
             src="https://www.youtube.com/embed/N2rwO0ET8G4?autoplay=1&mute=1&loop=1&playlist=N2rwO0ET8G4&controls=0&showinfo=0&modestbranding=1&rel=0&disablekb=1&iv_load_policy=3&playsinline=1"
@@ -19,6 +24,7 @@ export function HomePage() {
             allow="autoplay; encrypted-media"
             allowFullScreen
             style={{ border: 0 }}
+            loading="lazy"
           />
         </div>
         <div className="absolute inset-0 video-overlay" />

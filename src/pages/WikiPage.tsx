@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { WorldMap } from '../components/WorldMap';
-import { monsters, recipes, guides } from '../data/wikiData';
+import { monsters, recipes, guides, biomes, bosses } from '../data/wikiData';
 
 export function WikiPage() {
-  const [tab, setTab] = useState<'map' | 'monsters' | 'craft' | 'guides'>('map');
+  const [tab, setTab] = useState<'map' | 'biomes' | 'bosses' | 'monsters' | 'craft' | 'guides'>('map');
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
@@ -19,15 +19,17 @@ export function WikiPage() {
       {/* Tabs */}
       <div className="flex flex-wrap gap-2 mb-8 justify-center">
         {[
-          { id: 'map', label: 'Карта Мира', rune: 'ᛟ' },
-          { id: 'monsters', label: 'Монстры', rune: 'ᛏ' },
-          { id: 'craft', label: 'Крафт', rune: 'ᚠ' },
-          { id: 'guides', label: 'Гайды', rune: 'ᚱ' },
+          { id: 'map', label: 'Карта', rune: 'ᛟ' },
+          { id: 'biomes', label: 'Биомы', rune: 'ᚠ' },
+          { id: 'bosses', label: 'Боссы', rune: 'ᛏ' },
+          { id: 'monsters', label: 'Существа', rune: 'ᛗ' },
+          { id: 'craft', label: 'Крафт', rune: 'ᚱ' },
+          { id: 'guides', label: 'Гайды', rune: 'ᛊ' },
         ].map(t => (
           <button
             key={t.id}
             onClick={() => setTab(t.id as any)}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded text-sm transition-all ${
+            className={`flex items-center gap-1.5 px-3 py-2 rounded text-xs md:text-sm transition-all ${
               tab === t.id
                 ? 'bg-norse-gold/10 text-norse-gold border border-norse-gold/20'
                 : 'text-norse-muted hover:text-norse-text hover:bg-white/5'
@@ -46,6 +48,117 @@ export function WikiPage() {
           <p className="text-center text-xs text-norse-muted/50 mt-4">
             Интерактивная карта мира. Кликай на маркеры для подробностей.
           </p>
+        </div>
+      )}
+
+      {/* Biomes Tab */}
+      {tab === 'biomes' && (
+        <div className="space-y-4">
+          {biomes.map(biome => (
+            <div key={biome.id} className="card-hover card-wood rounded-lg p-6 card-corner">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="rune-icon shrink-0">
+                  <span className="text-xl font-serif">{biome.rune}</span>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="font-[Cinzel] text-lg font-bold text-norse-text">{biome.name}</h3>
+                    <span className={`text-xs px-2 py-1 rounded ${
+                      biome.difficulty === 'Лёгкий' ? 'bg-green-500/20 text-green-400' :
+                      biome.difficulty === 'Средний' ? 'bg-yellow-500/20 text-yellow-400' :
+                      biome.difficulty === 'Сложный' ? 'bg-orange-500/20 text-orange-400' :
+                      biome.difficulty === 'Очень сложный' ? 'bg-red-500/20 text-red-400' :
+                      'bg-red-700/20 text-red-600'
+                    }`}>{biome.difficulty}</span>
+                  </div>
+                  <p className="text-norse-muted text-sm mb-4">{biome.description}</p>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-4 text-xs">
+                <div>
+                  <div className="text-norse-gold font-semibold mb-2 uppercase tracking-wider text-[10px]">Ресурсы</div>
+                  <div className="flex flex-wrap gap-1">
+                    {biome.resources.map((r, i) => (
+                      <span key={i} className="bg-norse-gold/8 text-norse-gold px-2 py-0.5 rounded">{r}</span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-norse-gold font-semibold mb-2 uppercase tracking-wider text-[10px]">Существа</div>
+                  <div className="flex flex-wrap gap-1">
+                    {biome.creatures.map((c, i) => (
+                      <span key={i} className="bg-red-500/8 text-red-400 px-2 py-0.5 rounded">{c}</span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-norse-gold font-semibold mb-2 uppercase tracking-wider text-[10px]">Боссы</div>
+                  <div className="flex flex-wrap gap-1">
+                    {biome.bosses.map((b, i) => (
+                      <span key={i} className="bg-purple-500/8 text-purple-400 px-2 py-0.5 rounded">{b}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Bosses Tab */}
+      {tab === 'bosses' && (
+        <div className="space-y-4">
+          {bosses.map(boss => (
+            <div key={boss.id} className="card-hover card-inventory rounded-lg p-6 card-corner">
+              <div className="flex items-start gap-4 mb-4">
+                <div className="rune-icon shrink-0">
+                  <span className="text-xl font-serif">{boss.rune}</span>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="font-[Cinzel] text-lg font-bold text-norse-text">{boss.name}</h3>
+                    <span className="text-xs text-norse-muted">{boss.biome}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4 mb-4">
+                <div className="space-y-2 text-xs">
+                  <div className="flex justify-between">
+                    <span className="text-norse-muted">Здоровье:</span>
+                    <span className="text-red-400 font-bold">{boss.health.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-norse-muted">Урон:</span>
+                    <span className="text-orange-400 font-bold">{boss.damage}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-norse-muted">Слабость:</span>
+                    <span className="text-green-400">{boss.weakness}</span>
+                  </div>
+                </div>
+                <div>
+                  <div className="text-[10px] text-norse-muted uppercase tracking-wider mb-1">Призыв</div>
+                  <p className="text-norse-text text-xs">{boss.summoning}</p>
+                </div>
+              </div>
+
+              <div className="glass rounded p-3 mb-3">
+                <div className="text-[10px] text-norse-gold uppercase tracking-wider mb-1">Стратегия</div>
+                <p className="text-norse-muted text-xs">{boss.strategy}</p>
+              </div>
+
+              <div>
+                <div className="text-[10px] text-norse-muted uppercase tracking-wider mb-1">Дроп</div>
+                <div className="flex flex-wrap gap-1">
+                  {boss.drops.map((drop, i) => (
+                    <span key={i} className="text-xs bg-norse-gold/8 text-norse-gold px-2 py-0.5 rounded">{drop}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
