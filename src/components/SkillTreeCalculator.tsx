@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { allSkillTrees, SkillTree, SkillNode } from '../data/skillTreeData';
 
 export function SkillTreeCalculator() {
@@ -7,6 +6,9 @@ export function SkillTreeCalculator() {
   const [hoveredSkill, setHoveredSkill] = useState<SkillNode | null>(null);
   const [skillStates, setSkillStates] = useState<Record<string, number>>({});
   const [availablePoints, setAvailablePoints] = useState(50);
+
+  // Debug log
+  console.log('SkillTreeCalculator rendered', { selectedTree: selectedTree.name, skillsCount: selectedTree.skills.length });
 
   const getSkillPoints = (skillId: string) => skillStates[skillId] || 0;
 
@@ -51,8 +53,17 @@ export function SkillTreeCalculator() {
   const getSkillColor = (skill: SkillNode) => {
     const points = getSkillPoints(skill.id);
     if (points === 0) return 'border-gray-600 bg-gray-800/50';
-    if (points === skill.maxPoints) return `${selectedTree.color} border-2 shadow-lg`;
-    return `${selectedTree.color} border-2`;
+    return 'border-2';
+  };
+
+  const getSkillStyle = (skill: SkillNode) => {
+    const points = getSkillPoints(skill.id);
+    const isMaxed = points === skill.maxPoints;
+    return {
+      borderColor: points > 0 ? selectedTree.color : undefined,
+      backgroundColor: points > 0 ? `${selectedTree.color}20` : undefined,
+      boxShadow: isMaxed ? `0 0 20px ${selectedTree.color}40` : undefined,
+    };
   };
 
   const getSkillOpacity = (skill: SkillNode) => {
@@ -213,6 +224,7 @@ export function SkillTreeCalculator() {
                         strokeWidth="2"
                         strokeDasharray={isActive ? '0' : '5,5'}
                         opacity={isActive ? 0.8 : 0.3}
+                        style={{ transition: 'all 0.3s ease' }}
                       />
                     );
                   });
@@ -226,17 +238,15 @@ export function SkillTreeCalculator() {
                 const canUnlock = canUnlockSkill(skill);
                 
                 return (
-                  <motion.div
+                  <div
                     key={skill.id}
-                    className={`absolute cursor-pointer ${getSkillOpacity(skill)}`}
+                    className={`absolute cursor-pointer transition-transform hover:scale-110 ${getSkillOpacity(skill)}`}
                     style={{
                       left: `${skill.position.x}%`,
                       top: `${skill.position.y}%`,
                       transform: 'translate(-50%, -50%)',
                       zIndex: 10,
                     }}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
                     onClick={() => handleSkillClick(skill)}
                     onMouseEnter={() => setHoveredSkill(skill)}
                     onMouseLeave={() => setHoveredSkill(null)}
@@ -245,9 +255,7 @@ export function SkillTreeCalculator() {
                       className={`relative w-16 h-16 rounded-lg border-2 flex items-center justify-center transition-all ${getSkillColor(skill)} ${
                         canUnlock ? 'cursor-pointer' : 'cursor-not-allowed'
                       } ${isMaxed ? 'shadow-lg' : ''}`}
-                      style={{
-                        boxShadow: isMaxed ? `0 0 20px ${selectedTree.color}40` : undefined,
-                      }}
+                      style={getSkillStyle(skill)}
                     >
                       <span className="text-3xl">{skill.icon}</span>
                       
@@ -263,7 +271,7 @@ export function SkillTreeCalculator() {
                         </div>
                       )}
                     </div>
-                  </motion.div>
+                  </div>
                 );
               })}
             </div>
