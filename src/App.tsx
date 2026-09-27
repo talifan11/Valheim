@@ -170,6 +170,10 @@ function Navbar({ onAuth }: { onAuth: () => void }) {
           <span className="font-[Cinzel] font-bold text-norse-gold text-lg hidden sm:block">
             Хроники Города
           </span>
+          <span className="hidden lg:flex items-center gap-2 ml-3 pl-3 border-l border-norse-gold/20">
+            <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+            <span className="text-xs text-gray-400">Онлайн: <span className="text-norse-gold font-medium">50+</span></span>
+          </span>
         </a>
 
         <div className="hidden md:flex items-center gap-8">
@@ -214,24 +218,6 @@ function Navbar({ onAuth }: { onAuth: () => void }) {
 
 // ============ HERO SECTION ============
 function HeroSection({ onAuth }: { onAuth: () => void }) {
-  const [count, setCount] = useState(0);
-
-  useEffect(() => {
-    const target = 50;
-    const duration = 2000;
-    const step = target / (duration / 16);
-    const timer = setInterval(() => {
-      setCount((prev) => {
-        if (prev >= target) {
-          clearInterval(timer);
-          return target;
-        }
-        return Math.min(prev + step, target);
-      });
-    }, 16);
-    return () => clearInterval(timer);
-  }, []);
-
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* YouTube Video Background */}
@@ -260,13 +246,6 @@ function HeroSection({ onAuth }: { onAuth: () => void }) {
 
       {/* Content */}
       <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
-        <div className="animate-fade-in-up" style={{ animationDelay: '0.2s', opacity: 0 }}>
-          <div className="inline-flex items-center gap-2 bg-norse-gold/10 border border-norse-gold/30 rounded-full px-4 py-2 mb-8">
-            <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-            <span className="text-sm text-norse-gold">Сервер онлайн — {Math.floor(count)}+ воинов</span>
-          </div>
-        </div>
-
         <h1 className="animate-fade-in-up font-[Cinzel] text-5xl md:text-7xl lg:text-8xl font-black mb-6" style={{ animationDelay: '0.4s', opacity: 0 }}>
           <span className="animate-shimmer">Хроники</span>
           <br />
@@ -582,10 +561,12 @@ function ClassesSection() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {classes.map((cls, i) => (
             <div key={i} className="card-hover glass rounded-xl p-6 text-center group relative overflow-hidden">
-              <div className="absolute top-3 right-3 text-norse-gold/10 text-3xl font-serif group-hover:text-norse-gold/25 transition-colors">{cls.rune}</div>
+              <div className="absolute top-3 right-3 text-norse-gold/10 text-3xl font-serif group-hover:text-norse-gold/20 transition-colors">{cls.rune}</div>
               <div className="flex justify-center mb-4">
-                <div className={`transition-all duration-300 group-hover:scale-110 ${cls.color}`}>
-                  {cls.icon}
+                <div className={`w-16 h-16 rounded-xl bg-norse-gold/5 border border-norse-gold/10 flex items-center justify-center transition-all duration-500 group-hover:bg-norse-gold/10 group-hover:border-norse-gold/30 ${cls.color}`}>
+                  <div className="transition-transform duration-500 group-hover:scale-105">
+                    {cls.icon}
+                  </div>
                 </div>
               </div>
               <h3 className={`font-[Cinzel] text-lg font-bold ${cls.color} mb-2`}>{cls.name}</h3>

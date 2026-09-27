@@ -257,8 +257,8 @@ body {
 }
 
 .card-hover:hover .icon-svg {
-  stroke: #f0d78c;
-  filter: drop-shadow(0 0 8px rgba(201, 168, 76, 0.5));
+  stroke: #d4b85c;
+  filter: drop-shadow(0 0 4px rgba(201, 168, 76, 0.3));
 }
 
 /* Timeline */
