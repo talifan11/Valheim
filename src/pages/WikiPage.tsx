@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { WorldMap } from '../components/WorldMap';
-import { monsters, recipes, guides, biomes, bosses } from '../data/wikiData';
+import { WikiModal } from '../components/WikiModal';
+import { monsters, recipes, guides, biomes, bosses, Boss, Monster, Guide } from '../data/wikiData';
 
 export function WikiPage() {
   const [tab, setTab] = useState<'map' | 'biomes' | 'bosses' | 'monsters' | 'craft' | 'guides'>('map');
+  const [selectedItem, setSelectedItem] = useState<{ data: Boss | Monster | Guide; type: 'boss' | 'monster' | 'guide' } | null>(null);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
@@ -110,8 +112,17 @@ export function WikiPage() {
       {tab === 'bosses' && (
         <div className="space-y-4">
           {bosses.map(boss => (
-            <div key={boss.id} className="card-hover card-inventory rounded-lg p-6 card-corner">
+            <div 
+              key={boss.id} 
+              className="card-hover card-inventory rounded-lg p-6 card-corner cursor-pointer"
+              onClick={() => setSelectedItem({ data: boss, type: 'boss' })}
+            >
               <div className="flex items-start gap-4 mb-4">
+                {boss.image && (
+                  <div className="w-20 h-20 rounded-lg overflow-hidden border border-norse-gold/20 shrink-0">
+                    <img src={boss.image} alt={boss.name} className="w-full h-full object-cover" />
+                  </div>
+                )}
                 <div className="rune-icon shrink-0">
                   <span className="text-xl font-serif">{boss.rune}</span>
                 </div>
@@ -146,16 +157,19 @@ export function WikiPage() {
 
               <div className="glass rounded p-3 mb-3">
                 <div className="text-[10px] text-norse-gold uppercase tracking-wider mb-1">Стратегия</div>
-                <p className="text-norse-muted text-xs">{boss.strategy}</p>
+                <p className="text-norse-muted text-xs line-clamp-2">{boss.strategy}</p>
               </div>
 
-              <div>
-                <div className="text-[10px] text-norse-muted uppercase tracking-wider mb-1">Дроп</div>
-                <div className="flex flex-wrap gap-1">
-                  {boss.drops.map((drop, i) => (
-                    <span key={i} className="text-xs bg-norse-gold/8 text-norse-gold px-2 py-0.5 rounded">{drop}</span>
-                  ))}
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-[10px] text-norse-muted uppercase tracking-wider mb-1">Дроп</div>
+                  <div className="flex flex-wrap gap-1">
+                    {boss.drops.slice(0, 2).map((drop, i) => (
+                      <span key={i} className="text-xs bg-norse-gold/8 text-norse-gold px-2 py-0.5 rounded">{drop}</span>
+                    ))}
+                  </div>
                 </div>
+                <span className="text-norse-gold text-xs">Подробнее →</span>
               </div>
             </div>
           ))}
@@ -166,9 +180,18 @@ export function WikiPage() {
       {tab === 'monsters' && (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {monsters.map(monster => (
-            <div key={monster.id} className="card-hover card-wood rounded-lg p-5 card-corner">
+            <div 
+              key={monster.id} 
+              className="card-hover card-wood rounded-lg p-5 card-corner cursor-pointer"
+              onClick={() => setSelectedItem({ data: monster, type: 'monster' })}
+            >
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-2">
+                  {monster.image && (
+                    <div className="w-12 h-12 rounded overflow-hidden border border-norse-gold/20 shrink-0">
+                      <img src={monster.image} alt={monster.name} className="w-full h-full object-cover" />
+                    </div>
+                  )}
                   <span className="text-norse-gold text-lg font-serif">{monster.rune}</span>
                   <h3 className="font-[Cinzel] font-bold text-norse-text text-sm">{monster.name}</h3>
                 </div>
@@ -202,9 +225,12 @@ export function WikiPage() {
               </div>
 
               <div className="mt-3 pt-3 border-t border-norse-gold/10">
-                <div className="text-[10px] text-norse-muted uppercase tracking-wider mb-1">Дроп</div>
+                <div className="flex items-center justify-between">
+                  <div className="text-[10px] text-norse-muted uppercase tracking-wider mb-1">Дроп</div>
+                  <span className="text-norse-gold text-[10px]">Подробнее →</span>
+                </div>
                 <div className="flex flex-wrap gap-1">
-                  {monster.drops.map((drop, i) => (
+                  {monster.drops.slice(0, 3).map((drop, i) => (
                     <span key={i} className="text-[10px] bg-norse-gold/8 text-norse-gold px-2 py-0.5 rounded">{drop}</span>
                   ))}
                 </div>
@@ -254,7 +280,11 @@ export function WikiPage() {
       {tab === 'guides' && (
         <div className="grid sm:grid-cols-2 gap-4">
           {guides.map(guide => (
-            <div key={guide.id} className="card-hover card-wood rounded-lg p-5 card-corner cursor-pointer">
+            <div 
+              key={guide.id} 
+              className="card-hover card-wood rounded-lg p-5 card-corner cursor-pointer"
+              onClick={() => setSelectedItem({ data: guide, type: 'guide' })}
+            >
               <div className="flex items-start gap-3">
                 <span className="text-norse-gold text-2xl font-serif">{guide.rune}</span>
                 <div className="flex-1">
@@ -264,11 +294,21 @@ export function WikiPage() {
                     <span className="text-[10px] text-norse-muted">{guide.readTime}</span>
                   </div>
                   <p className="text-norse-muted/70 text-xs">{guide.excerpt}</p>
+                  <span className="text-norse-gold text-xs mt-2 inline-block">Читать →</span>
                 </div>
               </div>
             </div>
           ))}
         </div>
+      )}
+
+      {/* Wiki Modal */}
+      {selectedItem && (
+        <WikiModal 
+          data={selectedItem.data} 
+          type={selectedItem.type}
+          onClose={() => setSelectedItem(null)} 
+        />
       )}
     </div>
   );
