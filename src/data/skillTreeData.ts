@@ -18,6 +18,7 @@ export interface SkillTree {
   description: string;
   icon: string;
   color: string;
+  background?: string;
   skills: SkillNode[];
   maxPoints: number;
 }
@@ -29,6 +30,7 @@ export const expertTrees: SkillTree[] = [
     description: 'Увеличивает урон и критический шанс',
     icon: '⚔️',
     color: '#ef4444',
+    background: 'https://image.qwenlm.ai/generated-images/8c499ede-7ae7-46c1-9155-dff39dd2ef2a/_result.png',
     maxPoints: 30,
     skills: [
       {
@@ -99,6 +101,7 @@ export const expertTrees: SkillTree[] = [
     description: 'Увеличивает скорость передвижения и атаки',
     icon: '⚡',
     color: '#3b82f6',
+    background: 'https://image.qwenlm.ai/generated-images/53a39bbb-e507-4044-9673-e4bf2cad6f8d/_result.png',
     maxPoints: 30,
     skills: [
       {
@@ -157,6 +160,7 @@ export const expertTrees: SkillTree[] = [
     description: 'Увеличивает здоровье и защиту',
     icon: '🛡️',
     color: '#10b981',
+    background: 'https://image.qwenlm.ai/generated-images/8f6df151-4540-4ba2-885c-4aa1115e65a4/_result.png',
     maxPoints: 30,
     skills: [
       {
@@ -226,6 +230,7 @@ export const expertTrees: SkillTree[] = [
     description: 'Улучшает сбор ресурсов и крафт',
     icon: '🔨',
     color: '#f59e0b',
+    background: 'https://image.qwenlm.ai/generated-images/54cceac5-c53c-4cff-944e-272c0c1b3817/_result.png',
     maxPoints: 30,
     skills: [
       {
@@ -298,6 +303,7 @@ export const weaponTrees: SkillTree[] = [
     description: 'Мастерство стрельбы из лука',
     icon: '🏹',
     color: '#84cc16',
+    background: 'https://image.qwenlm.ai/generated-images/1291770f-ea86-4012-926a-96c01be394fd/_result.png',
     maxPoints: 25,
     skills: [
       {
@@ -369,6 +375,7 @@ export const weaponTrees: SkillTree[] = [
     description: 'Мастерство владения мечом',
     icon: '🗡️',
     color: '#6366f1',
+    background: 'https://image.qwenlm.ai/generated-images/8e1a89fd-4493-45e6-941d-ae335d754a4e/_result.png',
     maxPoints: 25,
     skills: [
       {
@@ -440,6 +447,7 @@ export const weaponTrees: SkillTree[] = [
     description: 'Мастерство магической магии',
     icon: '🪄',
     color: '#a855f7',
+    background: 'https://image.qwenlm.ai/generated-images/c86ca992-f298-42a9-9e39-508f9a1c77c5/_result.png',
     maxPoints: 25,
     skills: [
       {
@@ -514,6 +522,7 @@ export const jobTrees: SkillTree[] = [
     description: 'Мастер дальнего боя',
     icon: '🏹',
     color: '#84cc16',
+    background: 'https://image.qwenlm.ai/generated-images/d5272ec6-bbb4-43b4-bc1d-f76680ec7ba3/_result.png',
     maxPoints: 20,
     skills: [
       {
@@ -572,6 +581,7 @@ export const jobTrees: SkillTree[] = [
     description: 'Повелитель стихий',
     icon: '🧙',
     color: '#a855f7',
+    background: 'https://image.qwenlm.ai/generated-images/8098c7c2-9c3d-4b71-9e20-ad18dc288c5f/_result.png',
     maxPoints: 20,
     skills: [
       {
@@ -630,6 +640,7 @@ export const jobTrees: SkillTree[] = [
     description: 'Непробиваемая защита',
     icon: '🛡️',
     color: '#10b981',
+    background: 'https://image.qwenlm.ai/generated-images/b144bdc6-78c3-4b23-8e87-1fe9fe4d3604/_result.png',
     maxPoints: 20,
     skills: [
       {

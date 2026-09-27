@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { allSkillTrees, SkillTree, SkillNode } from '../data/skillTreeData';
 
 export function SkillTreeCalculator() {
   const [selectedTree, setSelectedTree] = useState<SkillTree>(allSkillTrees[0]);
   const [hoveredSkill, setHoveredSkill] = useState<SkillNode | null>(null);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [skillStates, setSkillStates] = useState<Record<string, number>>({});
   const [availablePoints, setAvailablePoints] = useState(50);
+
+  console.log('SkillTreeCalculator rendered', { selectedTree: selectedTree.name, skillsCount: selectedTree.skills.length });
 
   const getSkillPoints = (skillId: string) => skillStates[skillId] || 0;
 
@@ -37,6 +39,34 @@ export function SkillTreeCalculator() {
     }
   };
 
+  const handleSkillHover = (skill: SkillNode, event: React.MouseEvent) => {
+    setHoveredSkill(skill);
+    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    const tooltipWidth = 320;
+    const tooltipHeight = 300;
+    
+    // Calculate position to avoid going off-screen
+    let x = rect.right + 10;
+    let y = rect.top;
+    
+    // If tooltip would go off right edge, show on left side
+    if (x + tooltipWidth > window.innerWidth) {
+      x = rect.left - tooltipWidth - 10;
+    }
+    
+    // If tooltip would go off bottom edge, move up
+    if (y + tooltipHeight > window.innerHeight) {
+      y = window.innerHeight - tooltipHeight - 20;
+    }
+    
+    // If tooltip would go off top edge, move down
+    if (y < 0) {
+      y = 20;
+    }
+    
+    setTooltipPosition({ x, y });
+  };
+
   const resetTree = () => {
     const treeSkills = selectedTree.skills.reduce((acc, skill) => {
       acc[skill.id] = 0;
@@ -51,8 +81,17 @@ export function SkillTreeCalculator() {
   const getSkillColor = (skill: SkillNode) => {
     const points = getSkillPoints(skill.id);
     if (points === 0) return 'border-gray-600 bg-gray-800/50';
-    if (points === skill.maxPoints) return `${selectedTree.color} border-2 shadow-lg`;
-    return `${selectedTree.color} border-2`;
+    return 'border-2';
+  };
+
+  const getSkillStyle = (skill: SkillNode) => {
+    const points = getSkillPoints(skill.id);
+    const isMaxed = points === skill.maxPoints;
+    return {
+      borderColor: points > 0 ? selectedTree.color : undefined,
+      backgroundColor: points > 0 ? `${selectedTree.color}20` : undefined,
+      boxShadow: isMaxed ? `0 0 20px ${selectedTree.color}40` : undefined,
+    };
   };
 
   const getSkillOpacity = (skill: SkillNode) => {
@@ -174,135 +213,192 @@ export function SkillTreeCalculator() {
 
         {/* Skill Tree Visualization */}
         <div className="lg:col-span-3">
-          <div className="glass-dark rounded-lg p-6 relative min-h-[600px]">
-            {/* Tree Header */}
-            <div className="flex items-center gap-4 mb-6 pb-4 border-b border-norse-gold/10">
-              <div className="text-5xl">{selectedTree.icon}</div>
-              <div>
-                <h2 className="text-2xl font-bold text-norse-text">{selectedTree.name}</h2>
-                <p className="text-sm text-norse-muted">{selectedTree.description}</p>
-              </div>
-              <div className="ml-auto text-right">
-                <div className="text-xs text-norse-muted">Вложено очков</div>
-                <div className="text-xl font-bold" style={{ color: selectedTree.color }}>
-                  {selectedTree.skills.reduce((sum, skill) => sum + getSkillPoints(skill.id), 0)} / {selectedTree.maxPoints}
+          <div 
+            className="glass-dark rounded-lg p-6 relative min-h-[600px] overflow-hidden"
+            style={{
+              backgroundImage: selectedTree.background ? `url(${selectedTree.background})` : undefined,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
+            {/* Dark overlay */}
+            <div className="absolute inset-0 bg-black/70" />
+            
+            {/* Content */}
+            <div className="relative z-10">
+              {/* Tree Header */}
+              <div className="flex items-center gap-4 mb-6 pb-4 border-b border-norse-gold/10">
+                <div className="text-5xl">{selectedTree.icon}</div>
+                <div>
+                  <h2 className="text-2xl font-bold text-norse-text">{selectedTree.name}</h2>
+                  <p className="text-sm text-norse-muted">{selectedTree.description}</p>
                 </div>
-              </div>
-            </div>
-
-            {/* Skill Tree Grid */}
-            <div className="relative" style={{ height: '500px' }}>
-              {/* Connection Lines */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
-                {selectedTree.skills.map(skill => {
-                  if (!skill.requires) return null;
-                  return skill.requires.map(reqId => {
-                    const reqSkill = selectedTree.skills.find(s => s.id === reqId);
-                    if (!reqSkill) return null;
-                    
-                    const isActive = getSkillPoints(reqId) === reqSkill.maxPoints;
-                    
-                    return (
-                      <line
-                        key={`${skill.id}-${reqId}`}
-                        x1={`${reqSkill.position.x}%`}
-                        y1={`${reqSkill.position.y}%`}
-                        x2={`${skill.position.x}%`}
-                        y2={`${skill.position.y}%`}
-                        stroke={isActive ? selectedTree.color : '#4b5563'}
-                        strokeWidth="2"
-                        strokeDasharray={isActive ? '0' : '5,5'}
-                        opacity={isActive ? 0.8 : 0.3}
-                      />
-                    );
-                  });
-                })}
-              </svg>
-
-              {/* Skill Nodes */}
-              {selectedTree.skills.map(skill => {
-                const points = getSkillPoints(skill.id);
-                const isMaxed = points === skill.maxPoints;
-                const canUnlock = canUnlockSkill(skill);
-                
-                return (
-                  <motion.div
-                    key={skill.id}
-                    className={`absolute cursor-pointer ${getSkillOpacity(skill)}`}
-                    style={{
-                      left: `${skill.position.x}%`,
-                      top: `${skill.position.y}%`,
-                      transform: 'translate(-50%, -50%)',
-                      zIndex: 10,
-                    }}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handleSkillClick(skill)}
-                    onMouseEnter={() => setHoveredSkill(skill)}
-                    onMouseLeave={() => setHoveredSkill(null)}
-                  >
-                    <div
-                      className={`relative w-16 h-16 rounded-lg border-2 flex items-center justify-center transition-all ${getSkillColor(skill)} ${
-                        canUnlock ? 'cursor-pointer' : 'cursor-not-allowed'
-                      } ${isMaxed ? 'shadow-lg' : ''}`}
-                      style={{
-                        boxShadow: isMaxed ? `0 0 20px ${selectedTree.color}40` : undefined,
-                      }}
-                    >
-                      <span className="text-3xl">{skill.icon}</span>
-                      
-                      {/* Points Counter */}
-                      <div className="absolute -bottom-2 -right-2 bg-gray-900 border border-norse-gold/30 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold text-norse-gold">
-                        {points}/{skill.maxPoints}
-                      </div>
-
-                      {/* Active Skill Indicator */}
-                      {skill.type === 'active' && (
-                        <div className="absolute -top-2 -left-2 bg-norse-blue text-white text-[10px] px-1.5 py-0.5 rounded font-bold">
-                          {skill.keybind}
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-
-            {/* Skill Tooltip */}
-            {hoveredSkill && (
-              <div className="absolute bottom-4 left-4 right-4 glass rounded-lg p-4 border border-norse-gold/20">
-                <div className="flex items-start gap-4">
-                  <div className="text-4xl">{hoveredSkill.icon}</div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="text-lg font-bold text-norse-text">{hoveredSkill.name}</h3>
-                      {hoveredSkill.type === 'active' && (
-                        <span className="bg-norse-blue text-white text-xs px-2 py-0.5 rounded font-bold">
-                          Активная [{hoveredSkill.keybind}]
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-sm text-norse-muted mb-2">{hoveredSkill.description}</p>
-                    <div className="flex items-center gap-4 text-xs">
-                      <span className="text-norse-gold">
-                        Очки: {getSkillPoints(hoveredSkill.id)} / {hoveredSkill.maxPoints}
-                      </span>
-                      {hoveredSkill.requires && (
-                        <span className="text-norse-muted">
-                          Требует: {hoveredSkill.requires.map(reqId => {
-                            const req = selectedTree.skills.find(s => s.id === reqId);
-                            return req?.name;
-                          }).join(', ')}
-                        </span>
-                      )}
-                    </div>
+                <div className="ml-auto text-right">
+                  <div className="text-xs text-norse-muted">Вложено очков</div>
+                  <div className="text-xl font-bold" style={{ color: selectedTree.color }}>
+                    {selectedTree.skills.reduce((sum, skill) => sum + getSkillPoints(skill.id), 0)} / {selectedTree.maxPoints}
                   </div>
                 </div>
               </div>
-            )}
+
+              {/* Skill Tree Grid */}
+              <div className="relative" style={{ height: '500px' }}>
+                {/* Connection Lines */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+                  {selectedTree.skills.map(skill => {
+                    if (!skill.requires) return null;
+                    return skill.requires.map(reqId => {
+                      const reqSkill = selectedTree.skills.find(s => s.id === reqId);
+                      if (!reqSkill) return null;
+                      
+                      const isActive = getSkillPoints(reqId) === reqSkill.maxPoints;
+                      
+                      return (
+                        <line
+                          key={`${skill.id}-${reqId}`}
+                          x1={`${reqSkill.position.x}%`}
+                          y1={`${reqSkill.position.y}%`}
+                          x2={`${skill.position.x}%`}
+                          y2={`${skill.position.y}%`}
+                          stroke={isActive ? selectedTree.color : '#4b5563'}
+                          strokeWidth="2"
+                          strokeDasharray={isActive ? '0' : '5,5'}
+                          opacity={isActive ? 0.8 : 0.3}
+                          style={{ transition: 'all 0.3s ease' }}
+                        />
+                      );
+                    });
+                  })}
+                </svg>
+
+                {/* Skill Nodes */}
+                {selectedTree.skills.map(skill => {
+                  const points = getSkillPoints(skill.id);
+                  const isMaxed = points === skill.maxPoints;
+                  const canUnlock = canUnlockSkill(skill);
+                  
+                  return (
+                    <div
+                      key={skill.id}
+                      className={`absolute cursor-pointer transition-transform hover:scale-110 ${getSkillOpacity(skill)}`}
+                      style={{
+                        left: `${skill.position.x}%`,
+                        top: `${skill.position.y}%`,
+                        transform: 'translate(-50%, -50%)',
+                        zIndex: 10,
+                      }}
+                      onClick={() => handleSkillClick(skill)}
+                      onMouseEnter={(e) => handleSkillHover(skill, e)}
+                      onMouseLeave={() => setHoveredSkill(null)}
+                    >
+                      <div
+                        className={`relative w-16 h-16 rounded-lg border-2 flex items-center justify-center transition-all ${getSkillColor(skill)} ${
+                          canUnlock ? 'cursor-pointer' : 'cursor-not-allowed'
+                        } ${isMaxed ? 'shadow-lg' : ''}`}
+                        style={getSkillStyle(skill)}
+                      >
+                        <span className="text-3xl">{skill.icon}</span>
+                        
+                        {/* Points Counter */}
+                        <div className="absolute -bottom-2 -right-2 bg-gray-900 border border-norse-gold/30 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold text-norse-gold">
+                          {points}/{skill.maxPoints}
+                        </div>
+
+                        {/* Active Skill Indicator */}
+                        {skill.type === 'active' && (
+                          <div className="absolute -top-2 -left-2 bg-norse-blue text-white text-[10px] px-1.5 py-0.5 rounded font-bold">
+                            {skill.keybind}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* WoW-style Tooltip */}
+      {hoveredSkill && (
+        <div
+          className="fixed z-50 pointer-events-none"
+          style={{
+            left: `${tooltipPosition.x}px`,
+            top: `${tooltipPosition.y}px`,
+            maxWidth: '320px',
+          }}
+        >
+          <div 
+            className="rounded-lg border-2 p-4 shadow-2xl"
+            style={{
+              background: 'linear-gradient(135deg, rgba(11, 14, 20, 0.98) 0%, rgba(20, 25, 34, 0.98) 100%)',
+              borderColor: selectedTree.color,
+              boxShadow: `0 0 30px ${selectedTree.color}40`,
+            }}
+          >
+            {/* Header */}
+            <div className="flex items-center gap-3 mb-3 pb-3 border-b border-norse-gold/20">
+              <div className="text-4xl">{hoveredSkill.icon}</div>
+              <div className="flex-1">
+                <h3 className="text-lg font-bold text-norse-text">{hoveredSkill.name}</h3>
+                <div className="flex items-center gap-2">
+                  {hoveredSkill.type === 'active' && (
+                    <span 
+                      className="text-xs px-2 py-0.5 rounded font-bold text-white"
+                      style={{ backgroundColor: '#3b82f6' }}
+                    >
+                      Активная [{hoveredSkill.keybind}]
+                    </span>
+                  )}
+                  {hoveredSkill.type === 'passive' && (
+                    <span className="text-xs px-2 py-0.5 rounded font-bold bg-green-600 text-white">
+                      Пассивная
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Description */}
+            <p className="text-sm text-norse-muted mb-3 leading-relaxed">{hoveredSkill.description}</p>
+
+            {/* Stats */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-norse-muted">Очки:</span>
+                <span className="font-bold" style={{ color: selectedTree.color }}>
+                  {getSkillPoints(hoveredSkill.id)} / {hoveredSkill.maxPoints}
+                </span>
+              </div>
+              
+              {hoveredSkill.requires && (
+                <div className="text-xs">
+                  <span className="text-norse-muted">Требует: </span>
+                  <span className="text-norse-text">
+                    {hoveredSkill.requires.map(reqId => {
+                      const req = selectedTree.skills.find(s => s.id === reqId);
+                      return req?.name;
+                    }).join(', ')}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Click hint */}
+            <div className="mt-3 pt-3 border-t border-norse-gold/20 text-xs text-norse-muted text-center">
+              {getSkillPoints(hoveredSkill.id) < hoveredSkill.maxPoints && canUnlockSkill(hoveredSkill) && availablePoints > 0 ? (
+                <span className="text-green-400">Клик для улучшения</span>
+              ) : getSkillPoints(hoveredSkill.id) > 0 ? (
+                <span className="text-yellow-400">Клик для сброса</span>
+              ) : (
+                <span className="text-red-400">Недоступно</span>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
