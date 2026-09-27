@@ -74,12 +74,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <BiomeSelector />
               
               {isLoggedIn ? (
-                <div className="hidden sm:flex items-center gap-2 glass-dark rounded-lg px-2 py-1.5">
+                <Link to="/profile" className="hidden sm:flex items-center gap-2 glass-dark rounded-lg px-2 py-1.5 hover:border-norse-gold/30 transition-colors">
                   <span className="text-norse-gold text-xs font-serif">{progress.rank === 'legend' ? 'ᛟ' : progress.rank === 'jarl' ? 'ᛏ' : progress.rank === 'viking' ? 'ᚱ' : 'ᚠ'}</span>
                   <span className="text-norse-text text-[10px]">{getRankName(progress.rank)}</span>
-                </div>
+                </Link>
               ) : (
-                <Link to="/community" className="btn-viking btn-viking-secondary !py-1.5 !px-3 !text-[10px] hidden sm:block">
+                <Link to="/profile" className="btn-viking btn-viking-secondary !py-1.5 !px-3 !text-[10px] hidden sm:block">
                   Войти
                 </Link>
               )}
@@ -155,6 +155,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Link to="/wiki" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-xs">Вики</Link>
                 <Link to="/community" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-xs">Сообщество</Link>
                 <Link to="/shop" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-xs">Магазин</Link>
+                <Link to="/profile" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-xs">Профиль</Link>
               </div>
             </div>
           </div>
