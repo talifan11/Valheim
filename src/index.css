@@ -1,0 +1,301 @@
+@import "tailwindcss";
+
+@theme {
+  --color-norse-gold: #c9a84c;
+  --color-norse-dark: #0a0a0f;
+  --color-norse-darker: #050508;
+  --color-norse-brown: #2a1f14;
+  --color-norse-red: #8b1a1a;
+  --color-norse-blue: #1a3a5c;
+  --color-norse-purple: #2d1b4e;
+  --color-norse-green: #1a3d2e;
+  --font-cinzel: 'Cinzel', serif;
+  --font-inter: 'Inter', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #050508;
+  color: #e8e0d4;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0f;
+}
+::-webkit-scrollbar-thumb {
+  background: #c9a84c44;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c9a84c88;
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(201, 168, 76, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(201, 168, 76, 0.6); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes runeGlow {
+  0%, 100% { text-shadow: 0 0 10px rgba(201, 168, 76, 0.5); opacity: 0.15; }
+  50% { text-shadow: 0 0 30px rgba(201, 168, 76, 0.9), 0 0 60px rgba(201, 168, 76, 0.4); opacity: 0.3; }
+}
+
+@keyframes particleFloat {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
+}
+
+@keyframes portalSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes runeFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.08; }
+  50% { transform: translateY(-30px) rotate(5deg); opacity: 0.2; }
+}
+
+@keyframes borderGlow {
+  0%, 100% { border-color: rgba(201, 168, 76, 0.15); }
+  50% { border-color: rgba(201, 168, 76, 0.4); }
+}
+
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+.animate-shimmer { 
+  background: linear-gradient(90deg, #c9a84c 0%, #f0d78c 50%, #c9a84c 100%);
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+.animate-fade-in-left { animation: fadeInLeft 0.8s ease-out forwards; }
+.animate-fade-in-right { animation: fadeInRight 0.8s ease-out forwards; }
+.animate-rune-glow { animation: runeGlow 4s ease-in-out infinite; }
+.animate-portal-spin { animation: portalSpin 20s linear infinite; }
+.animate-scale-in { animation: scaleIn 0.5s ease-out forwards; }
+.animate-rune-float { animation: runeFloat 8s ease-in-out infinite; }
+.animate-border-glow { animation: borderGlow 3s ease-in-out infinite; }
+
+/* Particle system */
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(201, 168, 76, 0.6);
+  border-radius: 50%;
+  animation: particleFloat linear infinite;
+}
+
+/* Glass morphism */
+.glass {
+  background: rgba(10, 10, 15, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+.glass-dark {
+  background: rgba(5, 5, 8, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(201, 168, 76, 0.1);
+}
+
+/* Section divider */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #c9a84c44, transparent);
+}
+
+/* Hero gradient overlay */
+.hero-gradient {
+  background: radial-gradient(ellipse at center, rgba(45, 27, 78, 0.2) 0%, rgba(5, 5, 8, 0.85) 70%);
+}
+
+/* Button styles */
+.btn-norse {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.btn-norse::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transition: left 0.5s;
+}
+.btn-norse:hover::before {
+  left: 100%;
+}
+
+/* Card hover effect */
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(201, 168, 76, 0.15);
+}
+
+/* Rune decorations */
+.rune-bg {
+  font-family: serif;
+  color: #c9a84c;
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  animation: runeFloat 8s ease-in-out infinite;
+}
+
+/* Norse knot border */
+.norse-knot-border {
+  position: relative;
+}
+.norse-knot-border::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c9a84c, transparent);
+}
+
+/* Video overlay */
+.video-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(5, 5, 8, 0.4) 0%,
+    rgba(5, 5, 8, 0.6) 40%,
+    rgba(5, 5, 8, 0.9) 80%,
+    rgba(5, 5, 8, 1) 100%
+  );
+}
+
+/* Rune circle */
+.rune-circle {
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  border-radius: 50%;
+  position: absolute;
+}
+
+/* Icon container */
+.rune-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  border-radius: 8px;
+  background: rgba(201, 168, 76, 0.05);
+  color: #c9a84c;
+  font-size: 1.5rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover .rune-icon {
+  background: rgba(201, 168, 76, 0.15);
+  border-color: rgba(201, 168, 76, 0.6);
+  box-shadow: 0 0 20px rgba(201, 168, 76, 0.2);
+}
+
+/* SVG icon styles */
+.icon-svg {
+  width: 40px;
+  height: 40px;
+  stroke: #c9a84c;
+  fill: none;
+  stroke-width: 1.5;
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover .icon-svg {
+  stroke: #d4b85c;
+  filter: drop-shadow(0 0 4px rgba(201, 168, 76, 0.3));
+}
+
+/* Timeline */
+.timeline-line {
+  background: linear-gradient(to bottom, transparent, #c9a84c, transparent);
+}
+
+/* Responsive video */
+.video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 180%;
+  height: 180%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+@media (min-aspect-ratio: 16/9) {
+  .video-container iframe {
+    width: 180%;
+    height: 101%;
+  }
+}
+
+@media (max-aspect-ratio: 16/9) {
+  .video-container iframe {
+    width: 101%;
+    height: 180%;
+  }
+}
