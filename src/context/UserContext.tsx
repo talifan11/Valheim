@@ -9,6 +9,8 @@ interface UserProgress {
   foundRunes: string[];
   guild?: string;
   username?: string;
+  steamId?: string;
+  discordId?: string;
 }
 
 interface DailyTask {

@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useServerStatus } from '../hooks/useServerStatus';
 import { useUser } from '../context/UserContext';
 import { DailyTasks } from '../components/DailyTasks';
+import { ChroniclesWidget } from '../components/ChroniclesWidget';
+import { DiscordWidget } from '../components/DiscordWidget';
 
 export function HomePage() {
   const { servers, totalPlayers, onlineServers } = useServerStatus();
@@ -120,31 +122,14 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Daily Tasks + Info */}
+      {/* Daily Tasks + Chronicles + Discord */}
       <section className="py-16 px-4">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-6">
-          <DailyTasks />
-          
-          <div className="glass-dark rounded-lg p-4">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-norse-gold text-lg font-serif">ᚠ</span>
-              <h3 className="text-norse-text font-[Cinzel] font-bold text-sm">Записки Хранителя</h3>
-            </div>
-            <div className="space-y-3">
-              <div className="p-3 rounded bg-norse-gold/5 border border-norse-gold/10">
-                <div className="text-norse-gold text-xs font-semibold mb-1">День 47: Открытие Портала</div>
-                <p className="text-norse-muted/70 text-xs">Великий Портал в Чёрный Лес активирован. Первая экспедиция уже собрана.</p>
-              </div>
-              <div className="p-3 rounded bg-norse-gold/5 border border-norse-gold/10">
-                <div className="text-norse-gold text-xs font-semibold mb-1">День 45: Выборы Мэра</div>
-                <p className="text-norse-muted/70 text-xs">Ульф переизбран на второй срок. Обещал расширить рынок.</p>
-              </div>
-              <div className="p-3 rounded bg-norse-gold/5 border border-norse-gold/10">
-                <div className="text-norse-gold text-xs font-semibold mb-1">День 42: Первая Гильдия</div>
-                <p className="text-norse-muted/70 text-xs">«Железный Кулак» официально зарегистрирована. 12 членов.</p>
-              </div>
-            </div>
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <DailyTasks />
+            <ChroniclesWidget />
           </div>
+          <DiscordWidget />
         </div>
       </section>
 

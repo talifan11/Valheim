@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 
 export function HUD() {
-  const { progress, getRankName, getNextRank } = useUser();
+  const { progress, getRankName, getNextRank, isLoggedIn } = useUser();
   const [showXpGain, setShowXpGain] = useState(false);
   const [prevXp, setPrevXp] = useState(progress.xp);
   
@@ -21,9 +22,11 @@ export function HUD() {
     setPrevXp(progress.xp);
   }, [progress.xp]);
 
+  if (!isLoggedIn) return null;
+
   return (
-    <div className="fixed bottom-4 left-4 z-30 hidden md:block">
-      <div className={`glass-dark rounded-lg p-3 min-w-[200px] transition-all duration-300 ${showXpGain ? 'ring-1 ring-norse-gold/40 shadow-lg shadow-norse-gold/10' : ''}`}>
+    <Link to="/profile" className="fixed bottom-4 left-4 z-30 hidden md:block">
+      <div className={`glass-dark rounded-lg p-3 min-w-[200px] transition-all duration-300 hover:border-norse-gold/30 cursor-pointer ${showXpGain ? 'ring-1 ring-norse-gold/40 shadow-lg shadow-norse-gold/10' : ''}`}>
         {/* Rank */}
         <div className="flex items-center gap-2 mb-2">
           <span className="text-norse-gold text-sm font-serif">{progress.rank === 'legend' ? 'ᛟ' : progress.rank === 'jarl' ? 'ᛏ' : progress.rank === 'viking' ? 'ᚱ' : 'ᚠ'}</span>
@@ -54,6 +57,6 @@ export function HUD() {
           </div>
         )}
       </div>
-    </div>
+    </Link>
   );
 }
