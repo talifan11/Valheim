@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { WorldMap } from '../components/WorldMap';
 import { WikiModal } from '../components/WikiModal';
+import { SearchModal, useSearchShortcut } from '../components/SearchModal';
 import { monsters, recipes, guides, biomes, bosses, Boss, Monster, Guide } from '../data/wikiData';
 
 export function WikiPage() {
   const [tab, setTab] = useState<'map' | 'biomes' | 'bosses' | 'monsters' | 'craft' | 'guides'>('map');
   const [selectedItem, setSelectedItem] = useState<{ data: Boss | Monster | Guide; type: 'boss' | 'monster' | 'guide' } | null>(null);
+  const { isOpen: searchOpen, setIsOpen: setSearchOpen } = useSearchShortcut();
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
@@ -16,6 +19,20 @@ export function WikiPage() {
         <p className="text-norse-muted">
           Записки хранителя порта. База знаний, карта, гайды.
         </p>
+      </div>
+
+      {/* Search Button */}
+      <div className="flex justify-center mb-6">
+        <button
+          onClick={() => setSearchOpen(true)}
+          className="flex items-center gap-2 glass-dark rounded-lg px-4 py-2 hover:border-norse-gold/30 transition-colors"
+        >
+          <span className="text-norse-gold">⌕</span>
+          <span className="text-norse-muted text-sm">Поиск по Вики</span>
+          <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded bg-norse-gold/10 border border-norse-gold/20 text-norse-muted text-[10px]">
+            Ctrl+K
+          </kbd>
+        </button>
       </div>
 
       {/* Tabs */}
@@ -310,6 +327,13 @@ export function WikiPage() {
           onClose={() => setSelectedItem(null)} 
         />
       )}
+
+      {/* Search Modal */}
+      <SearchModal
+        isOpen={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        onSelect={(data, type) => setSelectedItem({ data, type })}
+      />
     </div>
   );
 }

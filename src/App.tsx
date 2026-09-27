@@ -10,6 +10,7 @@ import { WikiPage } from './pages/WikiPage';
 import { CommunityPage } from './pages/CommunityPage';
 import { ShopPage } from './pages/ShopPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { SkillTreePage } from './pages/SkillTreePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
               <Route path="/community" element={<CommunityPage />} />
               <Route path="/shop" element={<ShopPage />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/skill-tree" element={<SkillTreePage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Layout>
