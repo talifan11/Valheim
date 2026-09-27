@@ -41,7 +41,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-4">
               <Link to="/" className="flex items-center gap-2">
                 <span className="text-norse-gold text-xl font-serif animate-rune-glow">{theme.rune}</span>
-                <span className="font-[Cinzel] font-bold text-norse-gold text-sm hidden sm:block">Хроники Города</span>
+                <span className="font-[Cormorant] font-bold text-norse-gold text-lg hidden sm:block">Хроники Города</span>
               </Link>
               
               {/* Live Status */}

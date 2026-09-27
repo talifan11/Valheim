@@ -32,30 +32,56 @@ export function HomePage() {
         <div className="absolute inset-0 video-overlay" />
         <div className="absolute inset-0 bg-gradient-to-t from-[var(--biome-background)] via-transparent to-[var(--biome-background)]/60" />
 
-        <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
-          <h1 className="animate-fade-in-up font-[Cinzel] text-5xl md:text-7xl lg:text-8xl font-black mb-6" style={{ animationDelay: '0.2s', opacity: 0 }}>
-            <span className="animate-shimmer">Хроники</span>
-            <br />
-            <span className="text-norse-text">Города</span>
-          </h1>
+        <div className="relative z-10 px-6 max-w-6xl mx-auto">
+          <div className="grid lg:grid-cols-3 gap-8 items-center">
+            {/* Main Content */}
+            <div className="lg:col-span-2 text-center lg:text-left">
+              <h1 className="animate-fade-in-up font-[Cormorant] text-5xl md:text-7xl lg:text-8xl font-bold mb-6" style={{ animationDelay: '0.2s', opacity: 0 }}>
+                <span className="animate-shimmer">Хроники</span>
+                <br />
+                <span className="text-norse-text">Города</span>
+              </h1>
 
-          <p className="animate-fade-in-up text-xl md:text-2xl text-norse-muted mb-4" style={{ animationDelay: '0.4s', opacity: 0 }}>
-            Это не игра про выживание.
-            <br />
-            <span className="text-norse-gold font-semibold">Это игра про людей.</span>
-          </p>
+              <p className="animate-fade-in-up text-xl md:text-2xl text-norse-muted mb-4 font-[Cormorant] italic" style={{ animationDelay: '0.4s', opacity: 0 }}>
+                «Мы начали голыми на пляже.
+                <br />
+                <span className="text-norse-gold font-semibold not-italic">Закончим богами за горами.»</span>
+              </p>
 
-          <p className="animate-fade-in-up text-norse-muted/80 mb-10 max-w-2xl mx-auto" style={{ animationDelay: '0.6s', opacity: 0 }}>
-            Социальная RPG-песочница. 50+ игроков строят живое общество с нуля.
-          </p>
+              <p className="animate-fade-in-up text-norse-muted/80 mb-10 max-w-2xl mx-auto lg:mx-0" style={{ animationDelay: '0.6s', opacity: 0 }}>
+                Социальная RPG-песочница на движке Valheim. 50+ игроков строят живое общество с нуля. Лидеры рождаются из хаоса. Гильдии формируются стихийно.
+              </p>
 
-          <div className="animate-fade-in-up flex flex-col sm:flex-row items-center justify-center gap-4" style={{ animationDelay: '0.8s', opacity: 0 }}>
-            <a href="#download" className="btn-viking btn-viking-primary animate-pulse-glow flex items-center gap-2">
-              <span>⬇</span> Скачать Лаунчер
-            </a>
-            <Link to="/servers" className="btn-viking btn-viking-secondary">
-              Статус Серверов
-            </Link>
+              <div className="animate-fade-in-up flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4" style={{ animationDelay: '0.8s', opacity: 0 }}>
+                <a href="#download" className="btn-viking btn-viking-primary animate-pulse-glow flex items-center gap-2">
+                  <span>⬇</span> Скачать Лаунчер
+                </a>
+                <Link to="/servers" className="btn-viking btn-viking-secondary">
+                  Статус Серверов
+                </Link>
+              </div>
+            </div>
+
+            {/* Server Status Widget */}
+            <div className="animate-fade-in-up lg:col-span-1" style={{ animationDelay: '1s', opacity: 0 }}>
+              <div className="glass-dark rounded-lg p-4 card-corner">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                  <span className="text-norse-text text-sm font-semibold">Серверы онлайн</span>
+                </div>
+                <div className="space-y-2">
+                  {servers.slice(0, 3).map((server, i) => (
+                    <div key={i} className="flex items-center justify-between text-xs">
+                      <span className="text-norse-muted truncate">{server.name}</span>
+                      <span className="text-norse-gold font-semibold">{server.players}/{server.maxPlayers}</span>
+                    </div>
+                  ))}
+                </div>
+                <Link to="/servers" className="block mt-3 text-center text-norse-gold text-xs hover:underline">
+                  Подробнее →
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
