@@ -25,8 +25,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { path: '/', label: 'Главная', rune: 'ᛟ' },
     { path: '/servers', label: 'Серверы', rune: 'ᚠ' },
     { path: '/wiki', label: 'Вики', rune: 'ᚱ' },
-    { path: '/community', label: 'Сообщество', rune: 'ᛏ' },
-    { path: '/shop', label: 'Магазин', rune: 'ᛊ' },
+    { path: '/skill-tree', label: 'Таланты', rune: 'ᛏ' },
+    { path: '/community', label: 'Сообщество', rune: 'ᛊ' },
+    { path: '/shop', label: 'Магазин', rune: 'ᚦ' },
   ];
 
   return (
@@ -153,6 +154,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Link to="/" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-xs">Главная</Link>
                 <Link to="/servers" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-xs">Серверы</Link>
                 <Link to="/wiki" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-xs">Вики</Link>
+                <Link to="/skill-tree" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-xs">Таланты</Link>
                 <Link to="/community" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-xs">Сообщество</Link>
                 <Link to="/shop" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-xs">Магазин</Link>
                 <Link to="/profile" className="text-norse-muted/50 hover:text-norse-gold transition-colors text-xs">Профиль</Link>
