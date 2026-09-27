@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { allSkillTrees, SkillTree, SkillNode } from '../data/skillTreeData';
+import { TalentIcons, TalentIconKey } from './TalentIcons';
 
 export function SkillTreeCalculator() {
   const [selectedTree, setSelectedTree] = useState<SkillTree>(allSkillTrees[0]);
@@ -80,17 +81,25 @@ export function SkillTreeCalculator() {
 
   const getSkillColor = (skill: SkillNode) => {
     const points = getSkillPoints(skill.id);
-    if (points === 0) return 'border-gray-600 bg-gray-800/50';
-    return 'border-2';
+    const isMaxed = points === skill.maxPoints;
+    
+    if (points === 0) {
+      return 'border-gray-700 bg-gray-900/80';
+    }
+    if (isMaxed) {
+      return 'border-4 border-yellow-400 shadow-[0_0_15px_rgba(250,204,21,0.5)]';
+    }
+    return 'border-3';
   };
 
   const getSkillStyle = (skill: SkillNode) => {
     const points = getSkillPoints(skill.id);
     const isMaxed = points === skill.maxPoints;
+    
     return {
-      borderColor: points > 0 ? selectedTree.color : undefined,
-      backgroundColor: points > 0 ? `${selectedTree.color}20` : undefined,
-      boxShadow: isMaxed ? `0 0 20px ${selectedTree.color}40` : undefined,
+      borderColor: points > 0 && !isMaxed ? selectedTree.color : undefined,
+      borderWidth: points > 0 && !isMaxed ? '3px' : undefined,
+      boxShadow: isMaxed ? `0 0 20px ${selectedTree.color}60, inset 0 0 10px ${selectedTree.color}30` : points > 0 ? `0 0 10px ${selectedTree.color}30` : undefined,
     };
   };
 
@@ -278,35 +287,55 @@ export function SkillTreeCalculator() {
                   const canUnlock = canUnlockSkill(skill);
                   
                   return (
+                  <div
+                    key={skill.id}
+                    className={`absolute cursor-pointer transition-all duration-200 hover:scale-110 hover:z-20 ${getSkillOpacity(skill)}`}
+                    style={{
+                      left: `${skill.position.x}%`,
+                      top: `${skill.position.y}%`,
+                      transform: 'translate(-50%, -50%)',
+                      zIndex: 10,
+                    }}
+                    onClick={() => handleSkillClick(skill)}
+                    onMouseEnter={(e) => handleSkillHover(skill, e)}
+                    onMouseLeave={() => setHoveredSkill(null)}
+                  >
                     <div
-                      key={skill.id}
-                      className={`absolute cursor-pointer transition-transform hover:scale-110 ${getSkillOpacity(skill)}`}
+                      className={`relative w-16 h-16 rounded-md flex items-center justify-center transition-all overflow-hidden ${getSkillColor(skill)} ${
+                        canUnlock ? 'cursor-pointer' : 'cursor-not-allowed'
+                      }`}
                       style={{
-                        left: `${skill.position.x}%`,
-                        top: `${skill.position.y}%`,
-                        transform: 'translate(-50%, -50%)',
-                        zIndex: 10,
+                        ...getSkillStyle(skill),
+                        background: points > 0 ? `linear-gradient(135deg, ${selectedTree.color}40 0%, ${selectedTree.color}20 100%)` : 'linear-gradient(135deg, #1a202c 0%, #2d3748 100%)',
                       }}
-                      onClick={() => handleSkillClick(skill)}
-                      onMouseEnter={(e) => handleSkillHover(skill, e)}
-                      onMouseLeave={() => setHoveredSkill(null)}
                     >
-                      <div
-                        className={`relative w-16 h-16 rounded-lg border-2 flex items-center justify-center transition-all ${getSkillColor(skill)} ${
-                          canUnlock ? 'cursor-pointer' : 'cursor-not-allowed'
-                        } ${isMaxed ? 'shadow-lg' : ''}`}
-                        style={getSkillStyle(skill)}
-                      >
-                        <span className="text-3xl">{skill.icon}</span>
-                        
-                        {/* Points Counter */}
-                        <div className="absolute -bottom-2 -right-2 bg-gray-900 border border-norse-gold/30 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold text-norse-gold">
+                      <div className="w-full h-full relative">
+                        {TalentIcons[skill.icon as TalentIconKey] || <div className="w-full h-full bg-gray-700" />}
+                        {/* Overlay for unlearned skills */}
+                        {points === 0 && !canUnlock && (
+                          <div className="absolute inset-0 bg-black/60" />
+                        )}
+                      </div>                        
+                        {/* Points Counter - WoW Style */}
+                        <div 
+                          className="absolute -bottom-1 -right-1 bg-black/90 border-2 rounded-sm w-7 h-7 flex items-center justify-center text-xs font-bold"
+                          style={{ 
+                            borderColor: points > 0 ? selectedTree.color : '#4a5568',
+                            color: points > 0 ? '#fff' : '#a0aec0'
+                          }}
+                        >
                           {points}/{skill.maxPoints}
                         </div>
 
-                        {/* Active Skill Indicator */}
+                        {/* Active Skill Indicator - WoW Style */}
                         {skill.type === 'active' && (
-                          <div className="absolute -top-2 -left-2 bg-norse-blue text-white text-[10px] px-1.5 py-0.5 rounded font-bold">
+                          <div 
+                            className="absolute -top-1 -left-1 text-white text-[10px] px-1.5 py-0.5 rounded-sm font-bold border-2 shadow-lg"
+                            style={{ 
+                              backgroundColor: '#3b82f6',
+                              borderColor: '#60a5fa'
+                            }}
+                          >
                             {skill.keybind}
                           </div>
                         )}
@@ -340,7 +369,9 @@ export function SkillTreeCalculator() {
           >
             {/* Header */}
             <div className="flex items-center gap-3 mb-3 pb-3 border-b border-norse-gold/20">
-              <div className="text-4xl">{hoveredSkill.icon}</div>
+              <div className="w-12 h-12 rounded overflow-hidden border-2" style={{ borderColor: selectedTree.color }}>
+                {TalentIcons[hoveredSkill.icon as TalentIconKey] || <div className="w-full h-full bg-gray-700" />}
+              </div>
               <div className="flex-1">
                 <h3 className="text-lg font-bold text-norse-text">{hoveredSkill.name}</h3>
                 <div className="flex items-center gap-2">

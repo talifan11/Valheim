@@ -218,6 +218,66 @@ interface SkillNode {
 | Маг | `8098c7c2...` | Огонь, магическая энергия |
 | Танк | `b144bdc6...` | Каменная крепость, щиты |
 
+### Профессиональные иконки (WoW Style)
+
+**Файл:** `src/components/TalentIcons.tsx`
+
+Все эмодзи заменены на профессиональные SVG иконки в стиле World of Warcraft:
+
+**Особенности дизайна:**
+- Квадратные иконки 64x64px с градиентными фонами
+- Уникальные SVG для каждого навыка (40+ иконок)
+- Толстые рамки с цветовым кодированием:
+  - Серая рамка — навык недоступен
+  - Цветная рамка (цвет дерева) — навык изучен
+  - Золотая рамка с свечением — навык максимального уровня
+- Счётчик очков в правом нижнем углу (стиль WoW)
+- Индикатор клавиши для активных навыков (синий бейдж)
+
+**Список иконок по деревьям:**
+
+| Дерево | Иконки |
+|--------|--------|
+| Атака | `powerStrike`, `critStrike`, `critPower`, `berserkerRage`, `mortalStrike` |
+| Скорость | `swiftFeet`, `quickHands`, `cooldownReduce`, `whirlwind` |
+| Защита | `toughBody`, `toughArmor`, `dodge`, `regeneration`, `blockTraining` |
+| Производство | `efficientGather`, `craftMaster`, `durability`, `farmGrid`, `enchant` |
+| Лук | `preciseShot`, `quickReload`, `piercingArrow`, `explosiveArrow`, `arrowRain` |
+| Меч | `swordMastery`, `quickStrikes`, `parry`, `rushSlash`, `whirlwindSlash` |
+| Посох | `magicPower`, `manaFlow`, `quickCast`, `doubleCast`, `fireRain` |
+| Лучник | `highJump`, `softLanding`, `arrowSave`, `multishot` |
+| Маг | `elementalMaster`, `energyFlow`, `manaRegen`, `magicBurst` |
+| Танк | `livingWall`, `ironSkin`, `provoke`, `warCry` |
+
+**Как использовать:**
+```typescript
+import { TalentIcons, TalentIconKey } from './TalentIcons';
+
+// В компоненте
+<div className="w-16 h-16">
+  {TalentIcons[skill.icon as TalentIconKey]}
+</div>
+```
+
+**Добавление новой иконки:**
+1. Откройте `src/components/TalentIcons.tsx`
+2. Добавьте новый SVG в объект `TalentIcons`:
+```typescript
+newIcon: (
+  <svg viewBox="0 0 64 64" className="w-full h-full">
+    <defs>
+      <linearGradient id="newGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#color1" />
+        <stop offset="100%" stopColor="#color2" />
+      </linearGradient>
+    </defs>
+    <rect width="64" height="64" fill="url(#newGrad)" />
+    {/* Ваш дизайн */}
+  </svg>
+),
+```
+3. Используйте название иконки в `skillTreeData.ts`
+
 ### Логика работы
 
 ```typescript
@@ -392,7 +452,8 @@ const handleSkillHover = (skill: SkillNode, event: React.MouseEvent) => {
 - [x] Система геймификации (ранги, XP, задания)
 - [x] Интерактивная Вики с поиском (Ctrl+K)
 - [x] Калькулятор талантов (10 деревьев)
-- [x] Тултипы в стиле WoW
+- [x] **Профессиональные SVG иконки в стиле WoW** (40+ уникальных иконок)
+- [x] Тултипы в стиле WoW с умным позиционированием
 - [x] Фоновые изображения для классов
 - [x] Кликабельные модальные окна
 - [x] Live-статус серверов (имитация)
@@ -402,6 +463,7 @@ const handleSkillHover = (skill: SkillNode, event: React.MouseEvent) => {
 - [x] Руны Elder Futhark как декор
 - [x] Open Graph мета-теги
 - [x] 404 страница в лоре
+- [x] Убраны все эмодзи из калькулятора талантов
 
 ### Дизайн
 - [x] Цветовая палитра "Золотой стандарт"
@@ -719,7 +781,19 @@ git push origin feature/new-skill-tree
 
 ## 📝 Changelog
 
-### v1.0.0 (Текущая версия)
+### v1.1.0 (Текущая версия) - Профессиональные иконки
+- ✅ Полная структура портала (6 страниц)
+- ✅ Система геймификации
+- ✅ Интерактивная Вика с поиском
+- ✅ Калькулятор талантов (10 деревьев)
+- ✅ **Профессиональные SVG иконки в стиле WoW** (40+ уникальных иконок)
+- ✅ Тултипы в стиле WoW с умным позиционированием
+- ✅ Фоновые изображения для классов
+- ✅ Дизайн-система "Золотой стандарт"
+- ✅ Адаптивный дизайн
+- ✅ Убраны все эмодзи из калькулятора талантов
+
+### v1.0.0
 - ✅ Полная структура портала (6 страниц)
 - ✅ Система геймификации
 - ✅ Интерактивная Вика с поиском
