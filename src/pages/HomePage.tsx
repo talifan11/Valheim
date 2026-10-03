@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Play } from 'lucide-react';
 import { useServerStatus } from '../hooks/useServerStatus';
 import { useUser } from '../context/UserContext';
 import { DailyTasks } from '../components/DailyTasks';
@@ -12,8 +11,6 @@ import { ProgressBar } from '../components/ui/ProgressBar';
 export function HomePage() {
   const { servers, totalPlayers, onlineServers } = useServerStatus();
   const { isLoggedIn } = useUser();
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [showVideo, setShowVideo] = useState(false);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -38,57 +35,20 @@ export function HomePage() {
     <div>
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        {/* Постер вместо видео для быстрой загрузки */}
-        {!showVideo ? (
-          <>
-            {/* Фоновое изображение (WebP, ~200KB вместо 5MB видео) */}
-            <div 
-              className="absolute inset-0 bg-cover bg-center"
-              style={{
-                backgroundImage: 'url(https://images.unsplash.com/photo-1605000797499-95a51c526dae?w=1920&q=75)',
-              }}
-            />
-            
-            {/* Затемнение */}
-            <div className="absolute inset-0 bg-black/60" />
-            
-            {/* Кнопка Play */}
-            <button
-              onClick={() => setShowVideo(true)}
-              className="absolute inset-0 flex items-center justify-center group z-10"
-              aria-label="Воспроизвести видео"
-            >
-              <motion.div 
-                className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-amber-600/80 backdrop-blur-sm 
-                  flex items-center justify-center group-hover:bg-amber-500 
-                  shadow-2xl"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Play size={40} className="text-white ml-1" fill="white" />
-              </motion.div>
-            </button>
-          </>
-        ) : (
-          /* Видео загружается только по клику */
-          <div className="absolute inset-0">
-            {!videoLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black">
-                <div className="animate-spin rounded-full h-12 w-12 border-4 border-amber-600 border-t-transparent" />
-              </div>
-            )}
-            <iframe
-              src="https://www.youtube.com/embed/N2rwO0ET8G4?autoplay=1&mute=1&loop=1&playlist=N2rwO0ET8G4&controls=0&showinfo=0&modestbranding=1&rel=0&disablekb=1&iv_load_policy=3&playsinline=1"
-              className="w-full h-full"
-              onLoad={() => setVideoLoaded(true)}
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-              title="Valheim Gameplay"
-            />
-          </div>
-        )}
-        <div className="absolute inset-0 video-overlay" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--biome-background)] via-transparent to-[var(--biome-background)]/60" />
+        {/* Эпичное фоновое изображение в викингском стиле */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: 'url(https://image.qwenlm.ai/generated-images/3e0b46dc-5beb-425a-90f9-03432bbb1307/_result.png)',
+          }}
+        />
+        
+        {/* Затемнение для читаемости текста */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60" />
+        
+        {/* Атмосферный оверлей */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--biome-background)] via-transparent to-[var(--biome-background)]/40" />
 
         <div className="relative z-10 px-6 max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-3 gap-8 items-center">
