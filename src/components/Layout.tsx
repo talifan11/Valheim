@@ -1,9 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Download, User, LogIn, Menu, X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useUser } from '../context/UserContext';
 import { BiomeSelector } from './BiomeSelector';
+
+// Компонент для навигации с активным состоянием
+function NavLink({ to, children, rune }: { to: string; children: React.ReactNode; rune: string }) {
+  const location = useLocation();
+  const isActive = location.pathname === to;
+
+  return (
+    <Link
+      to={to}
+      className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs transition-all relative ${
+        isActive
+          ? 'bg-norse-gold/10 text-norse-gold border border-norse-gold/20'
+          : 'text-norse-muted hover:text-norse-text hover:bg-white/5'
+      }`}
+      aria-current={isActive ? 'page' : undefined}
+    >
+      <span className="text-xs font-serif">{rune}</span>
+      <span>{children}</span>
+      {isActive && (
+        <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-amber-400 rounded-full" />
+      )}
+    </Link>
+  );
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [scrolled, setScrolled] = useState(false);
@@ -39,6 +64,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--biome-background, #141c17)' }}>
+      {/* Skip Link для клавиатурной навигации */}
+      <a href="#main-content" className="skip-link">
+        Перейти к основному контенту
+      </a>
+
       {/* Navigation */}
       <motion.header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
@@ -49,9 +79,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
         transition={{ duration: 0.5 }}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-4">
             {/* Logo + Server Status */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 shrink-0">
               <Link to="/" className="flex items-center gap-2">
                 <motion.span
                   className="text-norse-gold text-xl font-serif animate-rune-glow"
@@ -66,7 +96,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </Link>
 
               {/* Live Status */}
-              <div className="hidden lg:flex items-center gap-2 pl-3 border-l border-norse-gold/15">
+              <div className="hidden xl:flex items-center gap-2 pl-3 border-l border-norse-gold/15">
                 <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
                 <span className="text-[10px] text-norse-muted">
                   Онлайн: <span className="text-norse-gold font-medium">47</span>
@@ -75,7 +105,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </div>
 
             {/* Desktop Nav */}
-            <div className="hidden md:flex items-center gap-1">
+            <nav className="hidden lg:flex items-center gap-1">
               {navItems.map((item, index) => (
                 <motion.div
                   key={item.path}
@@ -83,49 +113,57 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <Link
-                    to={item.path}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs transition-all ${
-                      location.pathname === item.path
-                        ? 'bg-norse-gold/10 text-norse-gold border border-norse-gold/20'
-                        : 'text-norse-muted hover:text-norse-text hover:bg-white/5'
-                    }`}
-                  >
-                    <span className="text-xs font-serif">{item.rune}</span>
-                    <span>{item.label}</span>
-                  </Link>
+                  <NavLink to={item.path} rune={item.rune}>
+                    {item.label}
+                  </NavLink>
                 </motion.div>
               ))}
-            </div>
+            </nav>
 
-            {/* Right side */}
-            <div className="flex items-center gap-2">
-              <BiomeSelector />
+            {/* CTA Buttons - ВСЕГДА ВИДНЫ */}
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+              {/* Скачать лаунчер - главный CTA */}
+              <a
+                href="/launcher.exe"
+                download
+                className="hidden sm:flex items-center gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-amber-600 to-amber-500 
+                  text-black font-bold rounded-lg hover:from-amber-500 hover:to-amber-400 
+                  transition-all shadow-lg hover:shadow-amber-500/50 text-sm"
+              >
+                <Download size={16} />
+                <span className="hidden md:inline">Скачать</span>
+              </a>
 
+              {/* Войти / Профиль */}
               {isLoggedIn ? (
                 <Link
                   to="/profile"
-                  className="hidden sm:flex items-center gap-2 glass-dark rounded-lg px-2 py-1.5 hover:border-norse-gold/30 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 bg-white/5 border border-amber-900/30 
+                    rounded-lg hover:bg-white/10 transition-colors"
                 >
-                  <span className="text-norse-gold text-xs font-serif">
-                    {progress.rank === 'legend' ? 'ᛟ' : progress.rank === 'jarl' ? 'ᛏ' : progress.rank === 'viking' ? 'ᚱ' : 'ᚠ'}
+                  <User size={16} className="text-amber-400" />
+                  <span className="text-sm text-norse-text hidden sm:inline">
+                    {getRankName(progress.rank)}
                   </span>
-                  <span className="text-norse-text text-[10px]">{getRankName(progress.rank)}</span>
                 </Link>
               ) : (
                 <Link
                   to="/profile"
-                  className="btn-viking btn-viking-secondary !py-1.5 !px-3 !text-[10px] hidden sm:block"
+                  className="flex items-center gap-2 px-3 py-2 bg-white/5 border border-amber-900/30 
+                    rounded-lg hover:bg-white/10 transition-colors"
                 >
-                  Войти
+                  <LogIn size={16} className="text-amber-400" />
+                  <span className="text-sm text-norse-text hidden sm:inline">Войти</span>
                 </Link>
               )}
 
+              {/* Mobile burger */}
               <button
-                className="md:hidden text-norse-gold text-xl"
+                className="lg:hidden p-2 text-amber-400 hover:bg-white/10 rounded-lg transition-colors"
                 onClick={() => setMobileOpen(!mobileOpen)}
+                aria-label={mobileOpen ? 'Закрыть меню' : 'Открыть меню'}
               >
-                {mobileOpen ? '✕' : '☰'}
+                {mobileOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
             </div>
           </div>
@@ -134,7 +172,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <AnimatePresence>
             {mobileOpen && (
               <motion.div
-                className="md:hidden glass-dark mt-2 rounded-lg p-4 space-y-2"
+                className="lg:hidden glass-dark mt-2 rounded-lg p-4 space-y-2"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
@@ -160,14 +198,28 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     </Link>
                   </motion.div>
                 ))}
+
+                {/* Mobile CTA */}
+                <div className="pt-3 border-t border-norse-gold/10 space-y-2">
+                  <a
+                    href="/launcher.exe"
+                    download
+                    className="flex items-center justify-center gap-2 w-full px-4 py-2 bg-gradient-to-r from-amber-600 to-amber-500 
+                      text-black font-bold rounded-lg hover:from-amber-500 hover:to-amber-400 
+                      transition-all shadow-lg"
+                  >
+                    <Download size={16} />
+                    <span>Скачать Лаунчер</span>
+                  </a>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
       </motion.header>
 
-      {/* Main Content with Page Transitions */}
-      <main className="pt-16 md:pt-20">
+      {/* Main Content */}
+      <main id="main-content" className="pt-16 md:pt-20">
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}

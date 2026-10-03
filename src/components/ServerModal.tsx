@@ -1,12 +1,29 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { ServerStatus } from '../hooks/useServerStatus';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 
 interface ServerModalProps {
   server: ServerStatus;
   onClose: () => void;
+  modalRef?: React.RefObject<HTMLDivElement>;
 }
 
-export function ServerModal({ server, onClose }: ServerModalProps) {
+export function ServerModal({ server, onClose, modalRef: externalModalRef }: ServerModalProps) {
+  const internalModalRef = useRef<HTMLDivElement>(null);
+  const modalRef = externalModalRef || internalModalRef;
+  useFocusTrap(modalRef, true);
+  
+  // Обработка Escape для закрытия модалки
+  useEffect(() => {
+    if (!modalRef.current) return;
+    
+    const handleClose = () => onClose();
+    modalRef.current.addEventListener('modal-close', handleClose);
+    return () => {
+      modalRef.current?.removeEventListener('modal-close', handleClose);
+    };
+  }, [onClose]);
+
   // Simulated online players (in real app, this would come from API)
   const onlinePlayers = [
     'Ульф-Мэр', 'Свен-Восьмирукий', 'Хильдир-Целитель', 'Бьорн-Строитель',
@@ -25,6 +42,10 @@ export function ServerModal({ server, onClose }: ServerModalProps) {
       <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" />
       
       <div 
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
         className="relative glass-dark rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-scale-in card-corner"
         onClick={(e) => e.stopPropagation()}
       >
@@ -43,7 +64,7 @@ export function ServerModal({ server, onClose }: ServerModalProps) {
             server.status === 'maintenance' ? 'bg-yellow-500' : 'bg-red-500'
           }`} />
           <div>
-            <h2 className="font-[Cinzel] text-2xl font-bold text-norse-text">{server.name}</h2>
+            <h2 id="modal-title" className="font-[Cinzel] text-2xl font-bold text-norse-text">{server.name}</h2>
             <p className="text-xs text-norse-muted">{server.world}</p>
           </div>
         </div>
