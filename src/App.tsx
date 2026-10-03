@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { UserProvider } from './context/UserContext';
@@ -6,12 +6,22 @@ import { Layout } from './components/Layout';
 import { HUD } from './components/HUD';
 import { HomePage } from './pages/HomePage';
 import { ServersPage } from './pages/ServersPage';
-import { WikiPage } from './pages/WikiPage';
-import { CommunityPage } from './pages/CommunityPage';
-import { ShopPage } from './pages/ShopPage';
-import { ProfilePage } from './pages/ProfilePage';
-import { SkillTreePage } from './pages/SkillTreePage';
-import { NotFoundPage } from './pages/NotFoundPage';
+
+// Lazy load тяжёлых страниц
+const WikiPage = lazy(() => import('./pages/WikiPage').then(module => ({ default: module.WikiPage })));
+const SkillTreePage = lazy(() => import('./pages/SkillTreePage').then(module => ({ default: module.SkillTreePage })));
+const CommunityPage = lazy(() => import('./pages/CommunityPage').then(module => ({ default: module.CommunityPage })));
+const ShopPage = lazy(() => import('./pages/ShopPage').then(module => ({ default: module.ShopPage })));
+const ProfilePage = lazy(() => import('./pages/ProfilePage').then(module => ({ default: module.ProfilePage })));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(module => ({ default: module.NotFoundPage })));
+
+function LoadingSpinner() {
+  return (
+    <div className="flex items-center justify-center min-h-[400px]">
+      <div className="animate-spin rounded-full h-12 w-12 border-4 border-amber-600 border-t-transparent" />
+    </div>
+  );
+}
 
 function App() {
   return (
@@ -19,16 +29,18 @@ function App() {
       <UserProvider>
         <HashRouter>
           <Layout>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/servers" element={<ServersPage />} />
-              <Route path="/wiki" element={<WikiPage />} />
-              <Route path="/community" element={<CommunityPage />} />
-              <Route path="/shop" element={<ShopPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/skill-tree" element={<SkillTreePage />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
+            <Suspense fallback={<LoadingSpinner />}>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/servers" element={<ServersPage />} />
+                <Route path="/wiki" element={<WikiPage />} />
+                <Route path="/community" element={<CommunityPage />} />
+                <Route path="/shop" element={<ShopPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/skill-tree" element={<SkillTreePage />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </Suspense>
           </Layout>
           <HUD />
         </HashRouter>

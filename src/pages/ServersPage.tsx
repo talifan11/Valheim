@@ -1,12 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useServerStatus } from '../hooks/useServerStatus';
 import { ServerModal } from '../components/ServerModal';
 import { ProgressBar } from '../components/ui/ProgressBar';
+import { useFocusTrap } from '../hooks/useFocusTrap';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 
 export function ServersPage() {
   const { servers, totalPlayers, onlineServers, lastUpdate } = useServerStatus();
   const [selectedServer, setSelectedServer] = useState<any>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  
+  useFocusTrap(modalRef, !!selectedServer);
+  
+  // Обработка Escape для закрытия модалки
+  useEffect(() => {
+    if (!selectedServer || !modalRef.current) return;
+    
+    const handleClose = () => setSelectedServer(null);
+    modalRef.current.addEventListener('modal-close', handleClose);
+    return () => {
+      modalRef.current?.removeEventListener('modal-close', handleClose);
+    };
+  }, [selectedServer]);
 
   const getTpsColor = (tps: number): 'green' | 'yellow' | 'red' => {
     if (tps >= 19.5) return 'green';
@@ -41,6 +57,8 @@ export function ServersPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
+      <Breadcrumbs />
+      
       {/* Header */}
       <motion.div
         className="text-center mb-12"
@@ -241,11 +259,11 @@ export function ServersPage() {
 
       {/* Server Modal */}
       {selectedServer && (
-        <ServerModal
-          server={selectedServer}
+        <ServerModal 
+          server={selectedServer} 
           onClose={() => setSelectedServer(null)}
+          modalRef={modalRef}
         />
-      )}
-    </div>
+      )}    </div>
   );
 }
