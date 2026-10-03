@@ -7,6 +7,8 @@ import { PostCard } from '../components/forum/PostCard';
 import { ForumSidebar } from '../components/forum/ForumSidebar';
 import { threads, posts, categories, Post } from '../data/forumData';
 import { RankBadge } from '../components/forum/RankBadge';
+import { ReadersNow } from '../components/social/ReadersNow';
+import { FollowButton } from '../components/social/FollowButton';
 
 export function ThreadPage() {
   const { threadId } = useParams<{ threadId: string }>();
@@ -49,6 +51,7 @@ export function ThreadPage() {
         authorRank: 'viking',
         body: replyText,
         usefulCount: 0,
+        agreedCount: 0,
         isAccepted: false,
         createdAt: 'только что',
       };
@@ -90,21 +93,29 @@ export function ThreadPage() {
           )}
         </div>
 
-        {/* Метаданные */}
-        <div className="flex items-center gap-2 text-sm text-norse-muted flex-wrap">
-          <span className="font-medium text-norse-text">@{thread.authorName}</span>
-          <RankBadge rank={thread.authorRank} size="sm" />
-          <span>·</span>
-          <span>{thread.createdAt}</span>
-          <span>·</span>
-          <span>{thread.repliesCount} ответов</span>
-          <span>·</span>
-          <span>{thread.viewsCount} просмотров</span>
+        {/* Метаданные + FollowButton */}
+        <div className="flex items-center gap-3 flex-wrap mb-3">
+          <div className="flex items-center gap-2 text-sm text-norse-muted flex-wrap">
+            <span className="font-medium text-norse-text">@{thread.authorName}</span>
+            <RankBadge rank={thread.authorRank} size="sm" />
+            <span>·</span>
+            <span>{thread.createdAt}</span>
+            <span>·</span>
+            <span>{thread.repliesCount} ответов</span>
+            <span>·</span>
+            <span>{thread.viewsCount} просмотров</span>
+          </div>
+          
+          {/* Кнопка "Следить" */}
+          <FollowButton
+            threadId={thread.id}
+            initialFollowersCount={thread.followersCount}
+          />
         </div>
 
         {/* Теги */}
         {thread.tags.length > 0 && (
-          <div className="flex items-center gap-2 mt-3 flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap">
             {thread.tags.map((tag, i) => (
               <span
                 key={i}
@@ -116,6 +127,11 @@ export function ThreadPage() {
           </div>
         )}
       </motion.div>
+
+      {/* Сейчас читают */}
+      {thread.readersNow && thread.readersNow.length > 0 && (
+        <ReadersNow readers={thread.readersNow} />
+      )}
 
       {/* Основной контент */}
       <div className="grid lg:grid-cols-[1fr_280px] gap-6">

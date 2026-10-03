@@ -5,6 +5,7 @@ import { Breadcrumbs } from '../components/Breadcrumbs';
 import { ThreadCard } from '../components/forum/ThreadCard';
 import { ForumSidebar, ForumCategoriesSidebar } from '../components/forum/ForumSidebar';
 import { threads, categories } from '../data/forumData';
+import { ActivityFeed } from '../components/social/ActivityFeed';
 
 type FilterType = 'all' | 'new' | 'popular' | 'unanswered' | 'mine';
 
@@ -142,8 +143,9 @@ export function TingPage() {
         </div>
 
         {/* Правый сайдбар */}
-        <div className="hidden lg:block">
+        <div className="hidden lg:block space-y-6">
           <ForumSidebar />
+          <ActivityFeed />
         </div>
       </div>
     </div>
