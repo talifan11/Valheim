@@ -173,7 +173,7 @@ export function SkillTreeCalculator() {
           {prestigeCount > 0 && (
             <div className="ml-4 px-3 py-1 bg-gradient-to-r from-purple-600/20 to-pink-600/20 border border-purple-500/30 rounded-lg">
               <div className="text-xs text-purple-300">Престиж</div>
-              <div className="text-lg font-bold text-purple-200">⭐ {prestigeCount}</div>
+              <div className="text-lg font-bold text-purple-200">ᛟ {prestigeCount}</div>
             </div>
           )}
         </div>
@@ -182,7 +182,7 @@ export function SkillTreeCalculator() {
             onClick={exportBuild}
             className="btn-viking btn-viking-secondary !py-2 !px-4 !text-xs"
           >
-            📋 Экспорт
+            <span className="font-serif">ᚱ</span> Экспорт
           </button>
           <button
             onClick={resetTree}
@@ -585,8 +585,9 @@ export function SkillTreeCalculator() {
             >
               <div className="flex items-center justify-between flex-wrap gap-4">
                 <div>
-                  <h3 className="text-2xl font-bold text-amber-400 mb-2">
-                    ⭐ Престиж: Перерождение
+                  <h3 className="text-2xl font-bold text-amber-400 mb-2 flex items-center gap-2">
+                    <span className="font-serif">ᛟ</span>
+                    <span>Престиж: Перерождение</span>
                   </h3>
                   <p className="text-norse-muted">
                     Сбрось все очки и получи перманентный бонус +5% ко всем навыкам + 10 бонусных очков
@@ -609,8 +610,9 @@ export function SkillTreeCalculator() {
 
           {/* Recommended Builds */}
           <div className="mt-6 p-6 glass-dark rounded-lg">
-            <h3 className="text-lg font-bold text-norse-text mb-4">
-              📊 Популярные билды
+            <h3 className="text-lg font-bold text-norse-text mb-4 flex items-center gap-2">
+              <span className="font-serif">ᚠ</span>
+              <span>Популярные билды</span>
             </h3>
             <div className="space-y-3">
               {recommendedBuilds.map(build => (
@@ -621,7 +623,7 @@ export function SkillTreeCalculator() {
                   onClick={() => loadBuild(build.path)}
                 >
                   <div className="flex items-center gap-3">
-                    <div className="text-2xl">⚔️</div>
+                    <div className="text-2xl font-serif text-amber-400">ᛏ</div>
                     <div>
                       <div className="font-semibold text-norse-text">{build.name}</div>
                       <div className="text-xs text-norse-muted">{build.description}</div>
@@ -737,11 +739,20 @@ export function SkillTreeCalculator() {
               {/* Action hint */}
               <div className="mt-4 pt-4 border-t border-norse-gold/20 text-xs text-center">
                 {getSkillPoints(hoveredSkill.id) < hoveredSkill.maxPoints && canUnlockSkill(hoveredSkill) && availablePoints > 0 ? (
-                  <span className="text-green-400 font-semibold">✨ Клик для улучшения</span>
+                  <span className="text-green-400 font-semibold flex items-center justify-center gap-1">
+                    <span className="font-serif">ᚨ</span>
+                    <span>Клик для улучшения</span>
+                  </span>
                 ) : getSkillPoints(hoveredSkill.id) > 0 ? (
-                  <span className="text-yellow-400 font-semibold">↺ Клик для сброса</span>
+                  <span className="text-yellow-400 font-semibold flex items-center justify-center gap-1">
+                    <span className="font-serif">ᚱ</span>
+                    <span>Клик для сброса</span>
+                  </span>
                 ) : (
-                  <span className="text-red-400">🔒 Недоступно</span>
+                  <span className="text-red-400 flex items-center justify-center gap-1">
+                    <span className="font-serif">ᛚ</span>
+                    <span>Недоступно</span>
+                  </span>
                 )}
               </div>
             </div>

@@ -150,8 +150,9 @@ export function DailyTasks() {
 
               {/* Инструкция */}
               {!task.completed && (
-                <div className="text-xs text-amber-400/80 bg-amber-900/20 p-2 rounded">
-                  💡 {task.instruction}
+                <div className="text-xs text-amber-400/80 bg-amber-900/20 p-2 rounded flex items-start gap-2">
+                  <span className="text-amber-400 font-serif text-base leading-none">ᚨ</span>
+                  <span>{task.instruction}</span>
                 </div>
               )}
             </div>
@@ -180,7 +181,7 @@ export function DailyTasks() {
             className="mt-6 p-4 bg-gradient-to-r from-amber-600/20 to-yellow-600/20 
               border border-amber-500/50 rounded-lg text-center"
           >
-            <div className="text-2xl mb-2">🎉</div>
+            <div className="text-3xl mb-2 text-amber-400 font-serif animate-pulse">ᛋ</div>
             <div className="font-bold text-amber-400">Все задания выполнены!</div>
             <div className="text-sm text-norse-muted mt-1">
               Ты получил {tasks.reduce((sum, t) => sum + t.points, 0)} XP

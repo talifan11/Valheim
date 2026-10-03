@@ -38,7 +38,7 @@ export function DiscordWidget() {
   return (
     <div className="glass-dark rounded-lg p-4 border border-[#5865F2]/20">
       <div className="flex items-center gap-2 mb-3">
-        <span className="text-[#5865F2] text-lg">💬</span>
+        <span className="text-[#5865F2] text-lg font-serif">ᛊ</span>
         <h3 className="text-norse-text font-[Cinzel] font-bold text-sm">Discord Активность</h3>
         <span className="ml-auto flex items-center gap-1">
           <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
@@ -65,7 +65,7 @@ export function DiscordWidget() {
         rel="noopener noreferrer"
         className="w-full mt-3 btn-viking btn-viking-secondary !py-2 !text-xs flex items-center justify-center gap-2"
       >
-        <span>💬</span>
+        <span className="font-serif">ᛊ</span>
         Присоединиться к Discord
       </a>
     </div>
