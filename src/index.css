@@ -650,6 +650,127 @@ body::before {
   color: #F3F4F6; /* Увеличил яркость с #E5E7EB до #F3F4F6 */
 }
 
+/* Стили для Markdown контента */
+.prose {
+  color: var(--color-text-primary);
+  line-height: 1.7;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  color: var(--color-amber);
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose h1 { font-size: 2em; }
+.prose h2 { font-size: 1.5em; }
+.prose h3 { font-size: 1.25em; }
+
+.prose p {
+  margin-bottom: 1em;
+}
+
+.prose a {
+  color: var(--color-rune-blue);
+  text-decoration: underline;
+}
+
+.prose a:hover {
+  color: var(--color-amber);
+}
+
+.prose strong {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.prose em {
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.prose ul, .prose ol {
+  margin-bottom: 1em;
+  padding-left: 1.5em;
+}
+
+.prose li {
+  margin-bottom: 0.5em;
+}
+
+.prose ul li {
+  list-style-type: disc;
+}
+
+.prose ol li {
+  list-style-type: decimal;
+}
+
+.prose blockquote {
+  border-left: 3px solid var(--color-amber);
+  padding-left: 1em;
+  margin: 1em 0;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.prose code {
+  background: rgba(200, 155, 60, 0.1);
+  color: var(--color-amber);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.prose pre {
+  background: rgba(11, 14, 20, 0.8);
+  border: 1px solid rgba(200, 155, 60, 0.2);
+  border-radius: 6px;
+  padding: 1em;
+  margin: 1em 0;
+  overflow-x: auto;
+}
+
+.prose pre code {
+  background: transparent;
+  padding: 0;
+  color: var(--color-text-primary);
+}
+
+.prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1em 0;
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid rgba(200, 155, 60, 0.2);
+  margin: 2em 0;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+}
+
+.prose th, .prose td {
+  border: 1px solid rgba(200, 155, 60, 0.2);
+  padding: 0.5em;
+  text-align: left;
+}
+
+.prose th {
+  background: rgba(200, 155, 60, 0.1);
+  color: var(--color-amber);
+  font-weight: 600;
+}
+
 /* Skip link для клавиатурных пользователей */
 .skip-link {
   position: absolute;

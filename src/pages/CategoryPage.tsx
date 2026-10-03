@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Search, Plus } from 'lucide-react';
 import { Breadcrumbs } from '../components/Breadcrumbs';
@@ -10,6 +10,7 @@ import { threads, categories, subCategories } from '../data/forumData';
 type FilterType = 'all' | 'new' | 'popular' | 'resolved' | 'mine';
 
 export function CategoryPage() {
+  const navigate = useNavigate();
   const { categorySlug } = useParams<{ categorySlug: string }>();
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
 
@@ -99,6 +100,7 @@ export function CategoryPage() {
 
         {/* Кнопка создания темы — усиленная */}
         <motion.button
+          onClick={() => navigate('/ting/new')}
           className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-500 
             text-black font-bold rounded-lg hover:from-amber-500 hover:to-amber-400 
             transition-all shadow-lg hover:shadow-amber-500/50"
