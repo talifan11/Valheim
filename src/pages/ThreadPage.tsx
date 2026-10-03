@@ -5,16 +5,17 @@ import { Send } from 'lucide-react';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { PostCard } from '../components/forum/PostCard';
 import { ForumSidebar } from '../components/forum/ForumSidebar';
-import { threads, posts, categories } from '../data/forumData';
+import { threads, posts, categories, Post } from '../data/forumData';
 import { RankBadge } from '../components/forum/RankBadge';
 
 export function ThreadPage() {
   const { threadId } = useParams<{ threadId: string }>();
   const [replyText, setReplyText] = useState('');
+  const [localPosts, setLocalPosts] = useState<Post[]>([]);
 
   const thread = threads.find(t => t.id === threadId);
   const category = thread ? categories.find(c => c.id === thread.categoryId) : null;
-  const threadPosts = posts.filter(p => p.threadId === threadId);
+  const threadPosts = [...posts.filter(p => p.threadId === threadId), ...localPosts];
 
   if (!thread || !category) {
     return (
@@ -38,6 +39,21 @@ export function ThreadPage() {
     if (replyText.trim()) {
       // В реальности отправка на сервер
       console.log('Отправка ответа:', replyText);
+      
+      // Добавляем новый пост локально для демонстрации
+      const newPost: Post = {
+        id: `post-${Date.now()}`,
+        threadId: threadId!,
+        authorId: 'current-user',
+        authorName: 'Вы',
+        authorRank: 'viking',
+        body: replyText,
+        usefulCount: 0,
+        isAccepted: false,
+        createdAt: 'только что',
+      };
+      
+      setLocalPosts(prev => [...prev, newPost]);
       setReplyText('');
     }
   };

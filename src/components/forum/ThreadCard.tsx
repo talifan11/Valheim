@@ -98,12 +98,13 @@ export function ThreadCard({ thread, categorySlug }: ThreadCardProps) {
           {thread.tags.length > 0 && (
             <div className="flex items-center gap-2 flex-wrap">
               {thread.tags.map((tag, i) => (
-                <span
+                <Link
                   key={i}
-                  className="text-xs px-2 py-0.5 bg-amber-600/10 text-amber-400 rounded border border-amber-600/20"
+                  to={`/ting/tag/${tag}`}
+                  className="text-xs px-2 py-0.5 bg-amber-600/10 text-amber-400 rounded border border-amber-600/20 hover:bg-amber-600/20 hover:border-amber-500/40 transition-colors"
                 >
                   #{tag}
-                </span>
+                </Link>
               ))}
             </div>
           )}

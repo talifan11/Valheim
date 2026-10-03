@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useUser } from '../context/UserContext';
+import { threads, posts, categories } from '../data/forumData';
+import { RankBadge } from '../components/forum/RankBadge';
+import { MessageCircle, Eye, ThumbsUp } from 'lucide-react';
 
 export function ProfilePage() {
   const { progress, getRankName, tasks, completeTask, isLoggedIn, login, logout } = useUser();
@@ -8,6 +12,7 @@ export function ProfilePage() {
   const [steamId, setSteamId] = useState('');
   const [discordId, setDiscordId] = useState('');
   const [showLinkModal, setShowLinkModal] = useState(false);
+  const [activeTab, setActiveTab] = useState<'general' | 'ting'>('general');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,7 +23,6 @@ export function ProfilePage() {
 
   const handleLinkAccount = (e: React.FormEvent) => {
     e.preventDefault();
-    // В реальном приложении здесь будет API-вызов для привязки
     setShowLinkModal(false);
   };
 
@@ -77,6 +81,14 @@ export function ProfilePage() {
 
   const currentRankRewards = rankRewards[progress.rank];
 
+  // Тестовые данные для форума (в реальности из API)
+  const userThreads = threads.filter(t => t.authorName === progress.username).slice(0, 3);
+  const userPosts = posts.filter(p => p.authorName === progress.username).slice(0, 5);
+
+  // Если нет данных, показываем тестовые
+  const displayThreads = userThreads.length > 0 ? userThreads : threads.slice(0, 2);
+  const displayPosts = userPosts.length > 0 ? userPosts : posts.slice(0, 3);
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
       <div className="text-center mb-8">
@@ -129,115 +141,212 @@ export function ProfilePage() {
         </div>
       </div>
 
-      {/* Rank Rewards */}
-      <div className="glass-dark rounded-lg p-6 mb-6 card-corner">
-        <h3 className="font-[Cinzel] text-lg font-bold text-norse-gold mb-4 flex items-center gap-2">
-          <span className="font-serif">{currentRankRewards.rune}</span>
-          Награды ранга «{currentRankRewards.title}»
-        </h3>
-        <div className="grid sm:grid-cols-2 gap-3">
-          {currentRankRewards.rewards.map((reward, i) => (
-            <div key={i} className="flex items-center gap-2 glass rounded p-3">
-              <span className="text-norse-gold text-sm">✓</span>
-              <span className="text-norse-text text-sm">{reward}</span>
-            </div>
-          ))}
-        </div>
+      {/* Tabs */}
+      <div className="flex items-center gap-2 mb-6">
+        <button
+          onClick={() => setActiveTab('general')}
+          className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+            activeTab === 'general'
+              ? 'bg-norse-gold/10 text-norse-gold border border-norse-gold/30'
+              : 'text-norse-muted hover:text-norse-text hover:bg-white/5 border border-transparent'
+          }`}
+        >
+          Общее
+        </button>
+        <button
+          onClick={() => setActiveTab('ting')}
+          className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+            activeTab === 'ting'
+              ? 'bg-norse-gold/10 text-norse-gold border border-norse-gold/30'
+              : 'text-norse-muted hover:text-norse-text hover:bg-white/5 border border-transparent'
+          }`}
+        >
+          Тинг
+        </button>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="glass-dark rounded-lg p-4 text-center card-corner">
-          <div className="text-2xl font-bold text-norse-gold mb-1">{progress.completedTasks.length}</div>
-          <div className="text-xs text-norse-muted">Заданий</div>
-        </div>
-        <div className="glass-dark rounded-lg p-4 text-center card-corner">
-          <div className="text-2xl font-bold text-norse-gold mb-1">{progress.foundRunes.length}</div>
-          <div className="text-xs text-norse-muted">Рун найдено</div>
-        </div>
-        <div className="glass-dark rounded-lg p-4 text-center card-corner">
-          <div className="text-2xl font-bold text-norse-gold mb-1">{progress.xp}</div>
-          <div className="text-xs text-norse-muted">Всего XP</div>
-        </div>
-        <div className="glass-dark rounded-lg p-4 text-center card-corner">
-          <div className="text-2xl font-bold text-norse-gold mb-1">{progress.guild || '—'}</div>
-          <div className="text-xs text-norse-muted">Гильдия</div>
-        </div>
-      </div>
-
-      {/* Daily Tasks */}
-      <div className="glass-dark rounded-lg p-6 mb-6">
-        <h3 className="font-[Cinzel] text-lg font-bold text-norse-gold mb-4 flex items-center gap-2">
-          <span className="font-serif">ᛊ</span>
-          Ежедневные Задания
-        </h3>
-        <div className="space-y-2">
-          {tasks.map(task => {
-            const isCompleted = progress.completedTasks.includes(task.id);
-            return (
-              <div
-                key={task.id}
-                className={`flex items-center gap-3 p-3 rounded transition-all ${
-                  isCompleted ? 'opacity-50 bg-green-500/5' : 'hover:bg-norse-gold/5 cursor-pointer'
-                }`}
-                onClick={() => !isCompleted && completeTask(task.id)}
-              >
-                <div className={`w-10 h-10 rounded flex items-center justify-center text-sm font-serif shrink-0 ${
-                  isCompleted ? 'bg-green-500/20 text-green-500' : 'bg-norse-gold/10 text-norse-gold'
-                }`}>
-                  {isCompleted ? '✓' : task.rune}
+      {/* General Tab */}
+      {activeTab === 'general' && (
+        <>
+          {/* Rank Rewards */}
+          <div className="glass-dark rounded-lg p-6 mb-6 card-corner">
+            <h3 className="font-[Cinzel] text-lg font-bold text-norse-gold mb-4 flex items-center gap-2">
+              <span className="font-serif">{currentRankRewards.rune}</span>
+              Награды ранга «{currentRankRewards.title}»
+            </h3>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {currentRankRewards.rewards.map((reward, i) => (
+                <div key={i} className="flex items-center gap-2 glass rounded p-3">
+                  <span className="text-norse-gold text-sm">✓</span>
+                  <span className="text-norse-text text-sm">{reward}</span>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-norse-text text-sm font-semibold truncate">{task.title}</div>
-                  <div className="text-norse-muted/60 text-xs truncate">{task.description}</div>
-                </div>
-                <div className="text-norse-gold text-sm font-semibold shrink-0">+{task.xpReward}</div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+              ))}
+            </div>
+          </div>
 
-      {/* Linked Accounts */}
-      <div className="glass-dark rounded-lg p-6">
-        <h3 className="font-[Cinzel] text-lg font-bold text-norse-gold mb-4 flex items-center gap-2">
-          <span className="font-serif">ᚠ</span>
-          Привязанные аккаунты
-        </h3>
-        <div className="space-y-3">
-          <div className="flex items-center justify-between glass rounded p-3">
-            <div className="flex items-center gap-3">
-              <span className="text-[#5865F2] text-xl">🎮</span>
-              <div>
-                <div className="text-norse-text text-sm font-semibold">Steam</div>
-                <div className="text-norse-muted/60 text-xs">{progress.steamId || 'Не привязан'}</div>
-              </div>
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="glass-dark rounded-lg p-4 text-center card-corner">
+              <div className="text-2xl font-bold text-norse-gold mb-1">{progress.completedTasks.length}</div>
+              <div className="text-xs text-norse-muted">Заданий</div>
             </div>
-            <button 
-              onClick={() => setShowLinkModal(true)}
-              className="text-norse-gold text-xs hover:underline"
-            >
-              {progress.steamId ? 'Изменить' : 'Привязать'}
-            </button>
-          </div>
-          
-          <div className="flex items-center justify-between glass rounded p-3">
-            <div className="flex items-center gap-3">
-              <span className="text-[#5865F2] text-xl">💬</span>
-              <div>
-                <div className="text-norse-text text-sm font-semibold">Discord</div>
-                <div className="text-norse-muted/60 text-xs">{progress.discordId || 'Не привязан'}</div>
-              </div>
+            <div className="glass-dark rounded-lg p-4 text-center card-corner">
+              <div className="text-2xl font-bold text-norse-gold mb-1">{progress.foundRunes.length}</div>
+              <div className="text-xs text-norse-muted">Рун найдено</div>
             </div>
-            <button 
-              onClick={() => setShowLinkModal(true)}
-              className="text-norse-gold text-xs hover:underline"
-            >
-              {progress.discordId ? 'Изменить' : 'Привязать'}
-            </button>
+            <div className="glass-dark rounded-lg p-4 text-center card-corner">
+              <div className="text-2xl font-bold text-norse-gold mb-1">{progress.xp}</div>
+              <div className="text-xs text-norse-muted">Всего XP</div>
+            </div>
+            <div className="glass-dark rounded-lg p-4 text-center card-corner">
+              <div className="text-2xl font-bold text-norse-gold mb-1">{progress.guild || '—'}</div>
+              <div className="text-xs text-norse-muted">Гильдия</div>
+            </div>
           </div>
-        </div>
-      </div>
+
+          {/* Daily Tasks */}
+          <div className="glass-dark rounded-lg p-6 mb-6">
+            <h3 className="font-[Cinzel] text-lg font-bold text-norse-gold mb-4 flex items-center gap-2">
+              <span className="font-serif">ᛊ</span>
+              Ежедневные Задания
+            </h3>
+            <div className="space-y-2">
+              {tasks.map(task => {
+                const isCompleted = progress.completedTasks.includes(task.id);
+                return (
+                  <div
+                    key={task.id}
+                    className={`flex items-center gap-3 p-3 rounded transition-all ${
+                      isCompleted ? 'opacity-50 bg-green-500/5' : 'hover:bg-norse-gold/5 cursor-pointer'
+                    }`}
+                    onClick={() => !isCompleted && completeTask(task.id)}
+                  >
+                    <div className={`w-10 h-10 rounded flex items-center justify-center text-sm font-serif shrink-0 ${
+                      isCompleted ? 'bg-green-500/20 text-green-500' : 'bg-norse-gold/10 text-norse-gold'
+                    }`}>
+                      {isCompleted ? '✓' : task.rune}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-norse-text text-sm font-semibold truncate">{task.title}</div>
+                      <div className="text-norse-muted/60 text-xs truncate">{task.description}</div>
+                    </div>
+                    <div className="text-norse-gold text-sm font-semibold shrink-0">+{task.xpReward}</div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Ting Tab */}
+      {activeTab === 'ting' && (
+        <>
+          {/* Forum Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="glass-dark rounded-lg p-4 text-center card-corner">
+              <div className="text-2xl font-bold text-norse-gold mb-1">{displayThreads.length}</div>
+              <div className="text-xs text-norse-muted">Тем создано</div>
+            </div>
+            <div className="glass-dark rounded-lg p-4 text-center card-corner">
+              <div className="text-2xl font-bold text-norse-gold mb-1">{displayPosts.length}</div>
+              <div className="text-xs text-norse-muted">Ответов</div>
+            </div>
+            <div className="glass-dark rounded-lg p-4 text-center card-corner">
+              <div className="text-2xl font-bold text-green-400 mb-1">
+                {displayPosts.reduce((sum, p) => sum + p.usefulCount, 0)}
+              </div>
+              <div className="text-xs text-norse-muted">Полезно получено</div>
+            </div>
+            <div className="glass-dark rounded-lg p-4 text-center card-corner">
+              <div className="text-2xl font-bold text-norse-gold mb-1">
+                {displayPosts.filter(p => p.isAccepted).length}
+              </div>
+              <div className="text-xs text-norse-muted">Принятых ответов</div>
+            </div>
+          </div>
+
+          {/* User Threads */}
+          <div className="glass-dark rounded-lg p-6 mb-6">
+            <h3 className="font-[Cinzel] text-lg font-bold text-norse-gold mb-4 flex items-center gap-2">
+              <span className="font-serif">ᛏ</span>
+              Мои темы
+            </h3>
+            <div className="space-y-3">
+              {displayThreads.map(thread => {
+                const category = categories.find(c => c.id === thread.categoryId);
+                return (
+                  <Link
+                    key={thread.id}
+                    to={`/ting/${category?.slug || 'ting'}/${thread.id}`}
+                    className="block p-3 rounded-lg bg-black/30 border border-amber-900/20 hover:border-amber-600/40 transition-colors"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="text-norse-text font-semibold mb-1 line-clamp-1">
+                          {thread.title}
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-norse-muted flex-wrap">
+                          <span className="px-2 py-0.5 bg-amber-600/10 text-amber-400 rounded border border-amber-600/20">
+                            {category?.title}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <MessageCircle size={12} />
+                            {thread.repliesCount}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Eye size={12} />
+                            {thread.viewsCount}
+                          </span>
+                          <span>{thread.createdAt}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* User Posts */}
+          <div className="glass-dark rounded-lg p-6">
+            <h3 className="font-[Cinzel] text-lg font-bold text-norse-gold mb-4 flex items-center gap-2">
+              <span className="font-serif">ᚱ</span>
+              Мои ответы
+            </h3>
+            <div className="space-y-3">
+              {displayPosts.map(post => {
+                const thread = threads.find(t => t.id === post.threadId);
+                const category = thread ? categories.find(c => c.id === thread.categoryId) : null;
+                return (
+                  <Link
+                    key={post.id}
+                    to={`/ting/${category?.slug || 'ting'}/${post.threadId}`}
+                    className="block p-3 rounded-lg bg-black/30 border border-amber-900/20 hover:border-amber-600/40 transition-colors"
+                  >
+                    <div className="text-xs text-norse-muted mb-1">
+                      В теме: <span className="text-norse-text">{thread?.title}</span>
+                    </div>
+                    <div className="text-norse-text text-sm line-clamp-2 mb-2">
+                      {post.body}
+                    </div>
+                    <div className="flex items-center gap-3 text-xs text-norse-muted">
+                      <span className="flex items-center gap-1">
+                        <ThumbsUp size={12} />
+                        {post.usefulCount}
+                      </span>
+                      <span>{post.createdAt}</span>
+                      {post.isAccepted && (
+                        <span className="text-green-400 font-semibold">ᛋ Принят</span>
+                      )}
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Link Accounts Modal */}
       {showLinkModal && (
