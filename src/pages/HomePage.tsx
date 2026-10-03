@@ -1,14 +1,35 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useServerStatus } from '../hooks/useServerStatus';
 import { useUser } from '../context/UserContext';
 import { DailyTasks } from '../components/DailyTasks';
 import { ChroniclesWidget } from '../components/ChroniclesWidget';
 import { DiscordWidget } from '../components/DiscordWidget';
+import { ProgressBar } from '../components/ui/ProgressBar';
 
 export function HomePage() {
   const { servers, totalPlayers, onlineServers } = useServerStatus();
   const { isLoggedIn } = useUser();
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: 'spring', stiffness: 300 },
+    },
+  };
 
   return (
     <div>
@@ -89,62 +110,148 @@ export function HomePage() {
       {/* Server Status Bar */}
       <section className="py-8 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="glass-dark rounded-lg p-4">
+          <motion.div
+            className="glass-dark rounded-lg p-4"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                 <span className="text-norse-text text-sm font-semibold">Статус Серверов</span>
               </div>
-              <Link to="/servers" className="text-norse-gold text-xs hover:underline">Подробнее →</Link>
+              <Link to="/servers" className="text-norse-gold text-xs hover:underline">
+                Подробнее →
+              </Link>
             </div>
-            
+
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
               {servers.slice(0, 5).map((server, i) => (
-                <div key={i} className="text-center">
+                <motion.div
+                  key={i}
+                  className="text-center"
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                >
                   <div className="text-norse-text text-xs font-medium truncate mb-1">{server.name}</div>
-                  <div className={`text-lg font-bold ${server.status === 'online' ? 'text-green-500' : server.status === 'maintenance' ? 'text-yellow-500' : 'text-red-500'}`}>
-                    {server.status === 'online' ? `${server.players}/${server.maxPlayers}` : server.status === 'maintenance' ? 'Ремонт' : 'Оффлайн'}
+                  <div
+                    className={`text-lg font-bold ${
+                      server.status === 'online'
+                        ? 'text-green-500'
+                        : server.status === 'maintenance'
+                        ? 'text-yellow-500'
+                        : 'text-red-500'
+                    }`}
+                  >
+                    {server.status === 'online'
+                      ? `${server.players}/${server.maxPlayers}`
+                      : server.status === 'maintenance'
+                      ? 'Ремонт'
+                      : 'Оффлайн'}
                   </div>
                   {server.status === 'online' && (
-                    <div className="text-[9px] text-norse-muted">TPS: {server.tps.toFixed(1)}</div>
+                    <>
+                      <ProgressBar
+                        value={server.players}
+                        max={server.maxPlayers}
+                        showValue={false}
+                        color={server.players >= server.maxPlayers * 0.9 ? 'red' : 'green'}
+                        size="sm"
+                      />
+                      <div className="text-[9px] text-norse-muted mt-1">TPS: {server.tps.toFixed(1)}</div>
+                    </>
                   )}
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Three Pillars */}
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="font-[Cinzel] text-3xl md:text-4xl font-bold text-center mb-12">
+          <motion.h2
+            className="font-[Cinzel] text-3xl md:text-4xl font-bold text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             <span className="text-norse-gold">Три Столпа</span>
-          </h2>
+          </motion.h2>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="card-hover card-wood rounded-lg p-6 card-corner">
-              <div className="rune-icon mb-4">
+          <motion.div
+            className="grid md:grid-cols-3 gap-6"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <motion.div
+              className="card-hover card-wood rounded-lg p-6 card-corner"
+              variants={itemVariants}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: '0 0 30px rgba(212, 175, 55, 0.3)',
+              }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              <motion.div
+                className="rune-icon mb-4"
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.6 }}
+              >
                 <span className="text-xl font-serif">ᛏ</span>
-              </div>
+              </motion.div>
               <h3 className="font-[Cinzel] text-lg font-bold text-norse-text mb-2">Свобода Роли</h3>
               <p className="text-norse-muted text-sm">Нет классов на бумаге — есть пути через поступки.</p>
-            </div>
-            <div className="card-hover card-wood rounded-lg p-6 card-corner">
-              <div className="rune-icon mb-4">
+            </motion.div>
+            <motion.div
+              className="card-hover card-wood rounded-lg p-6 card-corner"
+              variants={itemVariants}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: '0 0 30px rgba(212, 175, 55, 0.3)',
+              }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              <motion.div
+                className="rune-icon mb-4"
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.6 }}
+              >
                 <span className="text-xl font-serif">ᛚ</span>
-              </div>
+              </motion.div>
               <h3 className="font-[Cinzel] text-lg font-bold text-norse-text mb-2">Ограниченный Старт</h3>
-              <p className="text-norse-muted text-sm">Тесный остров. Конечные ресурсы. Единственный выход — договариваться.</p>
-            </div>
-            <div className="card-hover card-wood rounded-lg p-6 card-corner">
-              <div className="rune-icon mb-4">
+              <p className="text-norse-muted text-sm">
+                Тесный остров. Конечные ресурсы. Единственный выход — договариваться.
+              </p>
+            </motion.div>
+            <motion.div
+              className="card-hover card-wood rounded-lg p-6 card-corner"
+              variants={itemVariants}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: '0 0 30px rgba(212, 175, 55, 0.3)',
+              }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              <motion.div
+                className="rune-icon mb-4"
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.6 }}
+              >
                 <span className="text-xl font-serif">ᛟ</span>
-              </div>
+              </motion.div>
               <h3 className="font-[Cinzel] text-lg font-bold text-norse-text mb-2">Живой Социум</h3>
               <p className="text-norse-muted text-sm">Город строится сам. Лидеры рождаются из хаоса.</p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 

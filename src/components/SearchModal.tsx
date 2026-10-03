@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { bosses, monsters, guides, biomes } from '../data/wikiData';
 
 interface SearchResult {
@@ -115,12 +116,27 @@ export function SearchModal({ isOpen, onClose, onSelect }: SearchModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh] px-4" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/70 search-modal-overlay" />
-      
-      <div 
-        className="relative glass-dark rounded-xl w-full max-w-xl animate-scale-in overflow-hidden"
+    <motion.div
+      className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh] px-4"
+      onClick={onClose}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <motion.div
+        className="absolute inset-0 bg-black/70 search-modal-overlay"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      />
+
+      <motion.div
+        className="relative glass-dark rounded-xl w-full max-w-xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
+        initial={{ opacity: 0, scale: 0.9, y: -20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: -20 }}
+        transition={{ type: 'spring', stiffness: 300 }}
       >
         {/* Search Input */}
         <div className="p-4 border-b border-norse-gold/10">
@@ -195,8 +211,8 @@ export function SearchModal({ isOpen, onClose, onSelect }: SearchModalProps) {
           </div>
           <span>Ctrl+K для открытия</span>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 

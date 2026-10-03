@@ -218,6 +218,66 @@ interface SkillNode {
 | Маг | `8098c7c2...` | Огонь, магическая энергия |
 | Танк | `b144bdc6...` | Каменная крепость, щиты |
 
+### Профессиональные иконки (WoW Style)
+
+**Файл:** `src/components/TalentIcons.tsx`
+
+Все эмодзи заменены на профессиональные SVG иконки в стиле World of Warcraft:
+
+**Особенности дизайна:**
+- Квадратные иконки 64x64px с градиентными фонами
+- Уникальные SVG для каждого навыка (40+ иконок)
+- Толстые рамки с цветовым кодированием:
+  - Серая рамка — навык недоступен
+  - Цветная рамка (цвет дерева) — навык изучен
+  - Золотая рамка с свечением — навык максимального уровня
+- Счётчик очков в правом нижнем углу (стиль WoW)
+- Индикатор клавиши для активных навыков (синий бейдж)
+
+**Список иконок по деревьям:**
+
+| Дерево | Иконки |
+|--------|--------|
+| Атака | `powerStrike`, `critStrike`, `critPower`, `berserkerRage`, `mortalStrike` |
+| Скорость | `swiftFeet`, `quickHands`, `cooldownReduce`, `whirlwind` |
+| Защита | `toughBody`, `toughArmor`, `dodge`, `regeneration`, `blockTraining` |
+| Производство | `efficientGather`, `craftMaster`, `durability`, `farmGrid`, `enchant` |
+| Лук | `preciseShot`, `quickReload`, `piercingArrow`, `explosiveArrow`, `arrowRain` |
+| Меч | `swordMastery`, `quickStrikes`, `parry`, `rushSlash`, `whirlwindSlash` |
+| Посох | `magicPower`, `manaFlow`, `quickCast`, `doubleCast`, `fireRain` |
+| Лучник | `highJump`, `softLanding`, `arrowSave`, `multishot` |
+| Маг | `elementalMaster`, `energyFlow`, `manaRegen`, `magicBurst` |
+| Танк | `livingWall`, `ironSkin`, `provoke`, `warCry` |
+
+**Как использовать:**
+```typescript
+import { TalentIcons, TalentIconKey } from './TalentIcons';
+
+// В компоненте
+<div className="w-16 h-16">
+  {TalentIcons[skill.icon as TalentIconKey]}
+</div>
+```
+
+**Добавление новой иконки:**
+1. Откройте `src/components/TalentIcons.tsx`
+2. Добавьте новый SVG в объект `TalentIcons`:
+```typescript
+newIcon: (
+  <svg viewBox="0 0 64 64" className="w-full h-full">
+    <defs>
+      <linearGradient id="newGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#color1" />
+        <stop offset="100%" stopColor="#color2" />
+      </linearGradient>
+    </defs>
+    <rect width="64" height="64" fill="url(#newGrad)" />
+    {/* Ваш дизайн */}
+  </svg>
+),
+```
+3. Используйте название иконки в `skillTreeData.ts`
+
 ### Логика работы
 
 ```typescript
@@ -348,6 +408,123 @@ const handleSkillHover = (skill: SkillNode, event: React.MouseEvent) => {
 
 ---
 
+## 🎨 UI/UX Улучшения (v1.2.0)
+
+### Framer Motion анимации
+
+**Layout.tsx:**
+- Плавное появление навигации при загрузке
+- Анимация логотипа при наведении (поворот на 360°)
+- Stagger-анимация для пунктов меню
+- Плавные переходы между страницами (AnimatePresence)
+- Анимированное мобильное меню (slide-down)
+
+**ServersPage.tsx:**
+- Stagger-анимация для карточек серверов
+- Hover-эффекты с увеличением и золотым свечением
+- Прогресс-бары для игроков, TPS и пинга
+- Цветовые индикаторы статуса
+
+**HomePage.tsx:**
+- Scroll-анимации для секций (whileInView)
+- Hover-эффекты для карточек "Три Столпа"
+- Поворот рун при наведении
+- Прогресс-бары в виджете серверов
+
+**DailyTasks.tsx:**
+- Stagger-анимация для списка заданий
+- Поворот руны при наведении
+- Конфетти при выполнении задания
+- Анимация XP при получении
+- Прогресс-бар общего выполнения
+
+**HUD.tsx:**
+- Анимация заполнения полосы опыта
+- Конфетти при получении XP
+- Поворот руны при получении опыта
+- Анимированный текст "+XP!"
+
+**BiomeSelector.tsx:**
+- Анимация открытия/закрытия меню
+- Поворот руны при открытии
+- Stagger-анимация для пунктов списка
+- Hover-эффект сдвигом вправо
+
+**SearchModal.tsx:**
+- Плавное появление с масштабированием
+- Анимация фона (fade-in)
+- Stagger-анимация для результатов поиска
+
+### Прогресс-бары
+
+**Компонент ProgressBar (`src/components/ui/ProgressBar.tsx`):**
+```typescript
+interface ProgressBarProps {
+  value: number;
+  max: number;
+  label?: string;
+  showValue?: boolean;
+  color?: 'green' | 'yellow' | 'red' | 'amber' | 'blue';
+  size?: 'sm' | 'md' | 'lg';
+  animated?: boolean;
+}
+```
+
+**Использование:**
+- Серверы: игроки, TPS, пинг
+- Задания: общий прогресс
+- Опыт: полоска в HUD
+- Цветовая кодировка по статусу
+
+### Конфетти
+
+**Библиотека:** `canvas-confetti`
+
+**Триггеры:**
+- Выполнение задания (100 частиц, золотые цвета)
+- Получение опыта (50 частиц, снизу)
+- Все задания выполнены (200 частиц)
+
+**Цвета:** Золотая палитра (#d4af37, #ffd700, #c9952c)
+
+### Hover-эффекты
+
+**Карточки:**
+```typescript
+whileHover={{
+  scale: 1.05,
+  boxShadow: '0 0 30px rgba(212, 175, 55, 0.3)'
+}}
+transition={{ type: 'spring', stiffness: 300 }}
+```
+
+**Руны:**
+```typescript
+whileHover={{ rotate: 360 }}
+transition={{ duration: 0.6 }}
+```
+
+**Кнопки:**
+```typescript
+whileHover={{ scale: 1.05 }}
+whileTap={{ scale: 0.95 }}
+```
+
+### Мобильная адаптация
+
+**Layout.tsx:**
+- Бургер-меню с анимацией
+- Stagger-анимация для пунктов
+- Плавное открытие/закрытие
+- Touch-friendly элементы (44x44px минимум)
+
+**Responsive компоненты:**
+- Грид на десктопе, список на мобильных
+- Адаптивные размеры шрифтов
+- Оптимизированные отступы
+
+---
+
 ## 🐛 Известные проблемы и ограничения
 
 ### 1. Производительность
@@ -392,7 +569,8 @@ const handleSkillHover = (skill: SkillNode, event: React.MouseEvent) => {
 - [x] Система геймификации (ранги, XP, задания)
 - [x] Интерактивная Вики с поиском (Ctrl+K)
 - [x] Калькулятор талантов (10 деревьев)
-- [x] Тултипы в стиле WoW
+- [x] **Профессиональные SVG иконки в стиле WoW** (40+ уникальных иконок)
+- [x] Тултипы в стиле WoW с умным позиционированием
 - [x] Фоновые изображения для классов
 - [x] Кликабельные модальные окна
 - [x] Live-статус серверов (имитация)
@@ -402,6 +580,7 @@ const handleSkillHover = (skill: SkillNode, event: React.MouseEvent) => {
 - [x] Руны Elder Futhark как декор
 - [x] Open Graph мета-теги
 - [x] 404 страница в лоре
+- [x] Убраны все эмодзи из калькулятора талантов
 
 ### Дизайн
 - [x] Цветовая палитра "Золотой стандарт"
@@ -620,6 +799,118 @@ export const bosses: Boss[] = [
 ];
 ```
 
+### Использование анимаций
+
+#### Framer Motion паттерны
+
+**Stagger-анимация для списков:**
+```typescript
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'spring', stiffness: 300 },
+  },
+};
+
+<motion.div variants={containerVariants} initial="hidden" animate="visible">
+  {items.map(item => (
+    <motion.div key={item.id} variants={itemVariants}>
+      {item.content}
+    </motion.div>
+  ))}
+</motion.div>
+```
+
+**Scroll-анимации:**
+```typescript
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}
+  transition={{ duration: 0.6 }}
+>
+  Контент
+</motion.div>
+```
+
+**Hover-эффекты:**
+```typescript
+<motion.div
+  whileHover={{
+    scale: 1.05,
+    boxShadow: '0 0 30px rgba(212, 175, 55, 0.3)'
+  }}
+  transition={{ type: 'spring', stiffness: 300 }}
+>
+  Карточка
+</motion.div>
+```
+
+**Переходы между страницами:**
+```typescript
+<AnimatePresence mode="wait">
+  <motion.div
+    key={location.pathname}
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -20 }}
+    transition={{ duration: 0.3 }}
+  >
+    {children}
+  </motion.div>
+</AnimatePresence>
+```
+
+#### Конфетти
+
+```typescript
+import confetti from 'canvas-confetti';
+
+// При выполнении задания
+confetti({
+  particleCount: 100,
+  spread: 70,
+  origin: { y: 0.6 },
+  colors: ['#d4af37', '#ffd700', '#c9952c'],
+});
+
+// При получении XP
+confetti({
+  particleCount: 50,
+  spread: 60,
+  origin: { y: 0.9 },
+  colors: ['#d4af37', '#ffd700', '#c9952c'],
+});
+```
+
+#### Прогресс-бары
+
+```typescript
+import { ProgressBar } from '../components/ui/ProgressBar';
+
+<ProgressBar
+  value={75}
+  max={100}
+  label="Прогресс"
+  color="green" // green | yellow | red | amber | blue
+  size="md" // sm | md | lg
+  showValue={true}
+  animated={true}
+/>
+```
+
 ### Стили
 
 #### Добавление нового цвета
@@ -719,7 +1010,30 @@ git push origin feature/new-skill-tree
 
 ## 📝 Changelog
 
-### v1.0.0 (Текущая версия)
+### v1.2.0 (Текущая версия) - Полное улучшение UI/UX
+- ✅ Полная структура портала (6 страниц)
+- ✅ Система геймификации
+- ✅ Интерактивная Вика с поиском
+- ✅ Калькулятор талантов (10 деревьев)
+- ✅ **Профессиональные SVG иконки в стиле WoW** (40+ уникальных иконок)
+- ✅ Тултипы в стиле WoW с умным позиционированием
+- ✅ Фоновые изображения для классов
+- ✅ Дизайн-система "Золотой стандарт"
+- ✅ Адаптивный дизайн
+- ✅ Убраны все эмодзи из калькулятора талантов
+- ✅ **Framer Motion анимации** для всех страниц и компонентов
+- ✅ **Прогресс-бары** для серверов, заданий и опыта
+- ✅ **Конфетти** при выполнении заданий и получении XP
+- ✅ **Hover-эффекты** с подсветкой и увеличением
+- ✅ **Плавные переходы** между страницами
+- ✅ **Анимированное мобильное меню**
+- ✅ **Цветовые индикаторы** TPS и пинга
+
+### v1.1.0 - Профессиональные иконки
+- ✅ Профессиональные SVG иконки в стиле WoW (40+ уникальных иконок)
+- ✅ Убраны все эмодзи из калькулятора талантов
+
+### v1.0.0
 - ✅ Полная структура портала (6 страниц)
 - ✅ Система геймификации
 - ✅ Интерактивная Вика с поиском
