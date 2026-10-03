@@ -219,12 +219,12 @@ export function SkillTreeCalculator() {
                       whileHover={{ x: 5 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      <div className="w-10 h-10">
+                      <div className="w-12 h-12 shrink-0">
                         {Icon && <Icon color={tree.color} />}
                       </div>
-                      <div className="text-left flex-1">
-                        <div className="text-sm font-semibold text-norse-text">{tree.name}</div>
-                        <div className="text-xs text-norse-muted">{tree.description}</div>
+                      <div className="text-left flex-1 min-w-0">
+                        <div className="text-sm font-semibold text-norse-text truncate">{tree.name}</div>
+                        <div className="text-xs text-norse-muted truncate">{tree.description}</div>
                       </div>
                     </motion.button>
                   );
@@ -250,12 +250,12 @@ export function SkillTreeCalculator() {
                       whileHover={{ x: 5 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      <div className="w-10 h-10">
+                      <div className="w-12 h-12 shrink-0">
                         {Icon && <Icon color={tree.color} />}
                       </div>
-                      <div className="text-left flex-1">
-                        <div className="text-sm font-semibold text-norse-text">{tree.name}</div>
-                        <div className="text-xs text-norse-muted">{tree.description}</div>
+                      <div className="text-left flex-1 min-w-0">
+                        <div className="text-sm font-semibold text-norse-text truncate">{tree.name}</div>
+                        <div className="text-xs text-norse-muted truncate">{tree.description}</div>
                       </div>
                     </motion.button>
                   );
@@ -281,12 +281,12 @@ export function SkillTreeCalculator() {
                       whileHover={{ x: 5 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      <div className="w-10 h-10">
+                      <div className="w-12 h-12 shrink-0">
                         {Icon && <Icon color={tree.color} />}
                       </div>
-                      <div className="text-left flex-1">
-                        <div className="text-sm font-semibold text-norse-text">{tree.name}</div>
-                        <div className="text-xs text-norse-muted">{tree.description}</div>
+                      <div className="text-left flex-1 min-w-0">
+                        <div className="text-sm font-semibold text-norse-text truncate">{tree.name}</div>
+                        <div className="text-xs text-norse-muted truncate">{tree.description}</div>
                       </div>
                     </motion.button>
                   );
@@ -338,7 +338,7 @@ export function SkillTreeCalculator() {
                 {/* Tree Header */}
                 <div className="flex items-center gap-4 mb-6 pb-4 border-b border-norse-gold/10">
                   <motion.div
-                    className="w-20 h-20"
+                    className="w-24 h-24 shrink-0"
                     style={{
                       filter: `drop-shadow(0 0 15px ${selectedTree.color})`,
                     }}
@@ -348,11 +348,11 @@ export function SkillTreeCalculator() {
                   >
                     {TreeIcon && <TreeIcon color={selectedTree.color} />}
                   </motion.div>
-                  <div>
-                    <h2 className="text-2xl font-bold text-norse-text">{selectedTree.name}</h2>
-                    <p className="text-sm text-norse-muted">{selectedTree.description}</p>
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-2xl font-bold text-norse-text truncate">{selectedTree.name}</h2>
+                    <p className="text-sm text-norse-muted truncate">{selectedTree.description}</p>
                   </div>
-                  <div className="ml-auto text-right">
+                  <div className="ml-auto text-right shrink-0">
                     <div className="text-xs text-norse-muted">Вложено очков</div>
                     <div className="text-xl font-bold" style={{ color: selectedTree.color }}>
                       {totalSpent} / {selectedTree.maxPoints}
@@ -497,7 +497,7 @@ export function SkillTreeCalculator() {
 
                           {/* Основная иконка */}
                           <div
-                            className={`relative w-16 h-16 md:w-20 md:h-20 rounded-full border-4 flex items-center justify-center overflow-hidden transition-all duration-300 ${
+                            className={`relative w-20 h-20 md:w-24 md:h-24 rounded-full border-4 flex items-center justify-center overflow-hidden transition-all duration-300 ${
                               canUnlock ? 'cursor-pointer' : 'cursor-not-allowed opacity-70'
                             }`}
                             style={{
@@ -519,13 +519,13 @@ export function SkillTreeCalculator() {
                             />
 
                             {/* Иконка */}
-                            <div className="w-10 h-10 md:w-12 md:h-12 z-10">
+                            <div className="w-14 h-14 md:w-16 md:h-16 z-10">
                               {SkillIcon && <SkillIcon color={selectedTree.color} />}
                             </div>
 
                             {/* Счётчик очков */}
                             <div
-                              className="absolute -bottom-2 -right-2 w-9 h-9 rounded-full bg-black border-2 flex items-center justify-center text-xs font-bold z-20"
+                              className="absolute -bottom-1 -right-1 min-w-[2rem] h-8 px-1.5 rounded-full bg-black border-2 flex items-center justify-center text-xs font-bold z-20 whitespace-nowrap"
                               style={{
                                 borderColor: isMaxed ? '#fbbf24' : selectedTree.color,
                                 color: isMaxed ? '#fbbf24' : points > 0 ? '#fff' : '#9ca3af',
@@ -538,7 +538,7 @@ export function SkillTreeCalculator() {
                             {/* Индикатор активной способности */}
                             {skill.type === 'active' && (
                               <div
-                                className="absolute -top-2 -left-2 text-white text-[10px] px-2 py-1 rounded-full font-bold z-20 border-2"
+                                className="absolute -top-1 -left-1 text-white text-xs px-2 py-0.5 rounded-full font-bold z-20 border-2"
                                 style={{
                                   backgroundColor: '#3b82f6',
                                   borderColor: '#60a5fa',
@@ -552,10 +552,13 @@ export function SkillTreeCalculator() {
                             {/* MAX индикатор */}
                             {isMaxed && (
                               <motion.div
-                                className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-yellow-400 text-black text-[9px] px-2 py-0.5 rounded-full font-bold z-20"
+                                className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-yellow-400 text-black text-xs px-3 py-1 rounded-full font-bold z-20 whitespace-nowrap"
                                 initial={{ scale: 0 }}
                                 animate={{ scale: 1 }}
                                 transition={{ type: 'spring', stiffness: 500 }}
+                                style={{
+                                  boxShadow: '0 0 15px rgba(251, 191, 36, 0.6)',
+                                }}
                               >
                                 MAX
                               </motion.div>
@@ -664,20 +667,20 @@ export function SkillTreeCalculator() {
             >
               {/* Header */}
               <div className="flex items-center gap-4 mb-4 pb-4 border-b border-norse-gold/20">
-                <div className="relative w-16 h-16">
+                <div className="relative w-20 h-20 shrink-0">
                   {(() => {
                     const HoverIcon = iconMap[hoveredSkill.icon];
                     return HoverIcon ? <HoverIcon color={selectedTree.color} /> : null;
                   })()}
                   {getSkillPoints(hoveredSkill.id) === hoveredSkill.maxPoints && (
-                    <div className="absolute -top-2 -right-2 w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center text-xs font-bold text-black">
+                    <div className="absolute -top-2 -right-2 w-7 h-7 bg-amber-500 rounded-full flex items-center justify-center text-xs font-bold text-black" style={{ boxShadow: '0 0 10px rgba(251, 191, 36, 0.6)' }}>
                       MAX
                     </div>
                   )}
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-norse-text mb-1">{hoveredSkill.name}</h3>
-                  <div className="flex items-center gap-2">
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-xl font-bold text-norse-text mb-1 truncate">{hoveredSkill.name}</h3>
+                  <div className="flex items-center gap-2 flex-wrap">
                     {hoveredSkill.type === 'active' ? (
                       <span className="text-xs px-2 py-1 rounded font-bold text-white bg-blue-600">
                         Активная [{hoveredSkill.keybind}]

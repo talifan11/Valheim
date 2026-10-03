@@ -748,10 +748,179 @@ export const WarCryIcon: React.FC<IconProps> = ({ className = "w-full h-full", c
 );
 
 // ═══════════════════════════════════════════
+// TREE BRANCH ICONS
+// ═══════════════════════════════════════════
+
+export const AttackTreeIcon: React.FC<IconProps> = ({ className = "w-full h-full", color = "#ef4444" }) => (
+  <svg viewBox="0 0 64 64" className={className}>
+    <defs>
+      <radialGradient id="attackTreeGrad">
+        <stop offset="0%" stopColor={color} stopOpacity="0.9" />
+        <stop offset="100%" stopColor="#1a0f0a" />
+      </radialGradient>
+    </defs>
+    <circle cx="32" cy="32" r="30" fill="url(#attackTreeGrad)" />
+    <path d="M20 20 L44 44 M44 20 L20 44" stroke={color} strokeWidth="4" />
+    <circle cx="32" cy="32" r="8" fill={color} opacity="0.8" />
+    <text x="32" y="58" textAnchor="middle" fill={color} fontSize="8" fontFamily="serif">ᛏ</text>
+  </svg>
+);
+
+export const SpeedTreeIcon: React.FC<IconProps> = ({ className = "w-full h-full", color = "#3b82f6" }) => (
+  <svg viewBox="0 0 64 64" className={className}>
+    <defs>
+      <radialGradient id="speedTreeGrad">
+        <stop offset="0%" stopColor={color} stopOpacity="0.9" />
+        <stop offset="100%" stopColor="#0a0f1a" />
+      </radialGradient>
+    </defs>
+    <circle cx="32" cy="32" r="30" fill="url(#speedTreeGrad)" />
+    <path d="M16 32 L32 16 L48 32 L32 48 Z" fill="none" stroke={color} strokeWidth="3" />
+    <path d="M24 32 L32 24 L40 32 L32 40 Z" fill={color} opacity="0.8" />
+    <text x="32" y="58" textAnchor="middle" fill={color} fontSize="8" fontFamily="serif">ᚱ</text>
+  </svg>
+);
+
+export const DefenseTreeIcon: React.FC<IconProps> = ({ className = "w-full h-full", color = "#10b981" }) => (
+  <svg viewBox="0 0 64 64" className={className}>
+    <defs>
+      <radialGradient id="defenseTreeGrad">
+        <stop offset="0%" stopColor={color} stopOpacity="0.9" />
+        <stop offset="100%" stopColor="#0a1a0f" />
+      </radialGradient>
+    </defs>
+    <circle cx="32" cy="32" r="30" fill="url(#defenseTreeGrad)" />
+    <path d="M32 12 L48 24 L48 44 L32 56 L16 44 L16 24 Z" fill="none" stroke={color} strokeWidth="3" />
+    <path d="M32 20 L40 28 L40 40 L32 48 L24 40 L24 28 Z" fill={color} opacity="0.8" />
+    <text x="32" y="58" textAnchor="middle" fill={color} fontSize="8" fontFamily="serif">ᛁ</text>
+  </svg>
+);
+
+export const ProductionTreeIcon: React.FC<IconProps> = ({ className = "w-full h-full", color = "#f59e0b" }) => (
+  <svg viewBox="0 0 64 64" className={className}>
+    <defs>
+      <radialGradient id="productionTreeGrad">
+        <stop offset="0%" stopColor={color} stopOpacity="0.9" />
+        <stop offset="100%" stopColor="#1a0f0a" />
+      </radialGradient>
+    </defs>
+    <circle cx="32" cy="32" r="30" fill="url(#productionTreeGrad)" />
+    <path d="M24 16 L24 48 M40 16 L40 48" stroke={color} strokeWidth="4" />
+    <path d="M16 32 L48 32" stroke={color} strokeWidth="4" />
+    <circle cx="32" cy="32" r="6" fill={color} opacity="0.8" />
+    <text x="32" y="58" textAnchor="middle" fill={color} fontSize="8" fontFamily="serif">ᛒ</text>
+  </svg>
+);
+
+export const BowTreeIcon: React.FC<IconProps> = ({ className = "w-full h-full", color = "#84cc16" }) => (
+  <svg viewBox="0 0 64 64" className={className}>
+    <defs>
+      <radialGradient id="bowTreeGrad">
+        <stop offset="0%" stopColor={color} stopOpacity="0.9" />
+        <stop offset="100%" stopColor="#0f1a0a" />
+      </radialGradient>
+    </defs>
+    <circle cx="32" cy="32" r="30" fill="url(#bowTreeGrad)" />
+    <path d="M20 16 Q32 32 20 48" fill="none" stroke={color} strokeWidth="4" />
+    <path d="M20 32 L48 32" stroke={color} strokeWidth="3" />
+    <path d="M48 32 L42 26 M48 32 L42 38" stroke={color} strokeWidth="2" />
+    <text x="32" y="58" textAnchor="middle" fill={color} fontSize="8" fontFamily="serif">ᚱ</text>
+  </svg>
+);
+
+export const SwordTreeIcon: React.FC<IconProps> = ({ className = "w-full h-full", color = "#6366f1" }) => (
+  <svg viewBox="0 0 64 64" className={className}>
+    <defs>
+      <radialGradient id="swordTreeGrad">
+        <stop offset="0%" stopColor={color} stopOpacity="0.9" />
+        <stop offset="100%" stopColor="#0a0f1a" />
+      </radialGradient>
+    </defs>
+    <circle cx="32" cy="32" r="30" fill="url(#swordTreeGrad)" />
+    <path d="M32 12 L36 40 L32 52 L28 40 Z" fill={color} opacity="0.8" />
+    <path d="M20 36 L44 36" stroke={color} strokeWidth="3" />
+    <text x="32" y="58" textAnchor="middle" fill={color} fontSize="8" fontFamily="serif">ᛏ</text>
+  </svg>
+);
+
+export const StaffTreeIcon: React.FC<IconProps> = ({ className = "w-full h-full", color = "#a855f7" }) => (
+  <svg viewBox="0 0 64 64" className={className}>
+    <defs>
+      <radialGradient id="staffTreeGrad">
+        <stop offset="0%" stopColor={color} stopOpacity="0.9" />
+        <stop offset="100%" stopColor="#1a0a1a" />
+      </radialGradient>
+    </defs>
+    <circle cx="32" cy="32" r="30" fill="url(#staffTreeGrad)" />
+    <path d="M32 16 L32 52" stroke={color} strokeWidth="4" />
+    <circle cx="32" cy="20" r="8" fill={color} opacity="0.8" />
+    <path d="M24 20 L40 20" stroke={color} strokeWidth="2" />
+    <text x="32" y="58" textAnchor="middle" fill={color} fontSize="8" fontFamily="serif">ᛟ</text>
+  </svg>
+);
+
+export const ArcherTreeIcon: React.FC<IconProps> = ({ className = "w-full h-full", color = "#84cc16" }) => (
+  <svg viewBox="0 0 64 64" className={className}>
+    <defs>
+      <radialGradient id="archerTreeGrad">
+        <stop offset="0%" stopColor={color} stopOpacity="0.9" />
+        <stop offset="100%" stopColor="#0f1a0a" />
+      </radialGradient>
+    </defs>
+    <circle cx="32" cy="32" r="30" fill="url(#archerTreeGrad)" />
+    <circle cx="32" cy="24" r="8" fill={color} opacity="0.8" />
+    <path d="M24 36 L40 36 L38 52 L26 52 Z" fill={color} opacity="0.6" />
+    <text x="32" y="58" textAnchor="middle" fill={color} fontSize="8" fontFamily="serif">ᚱ</text>
+  </svg>
+);
+
+export const MageTreeIcon: React.FC<IconProps> = ({ className = "w-full h-full", color = "#a855f7" }) => (
+  <svg viewBox="0 0 64 64" className={className}>
+    <defs>
+      <radialGradient id="mageTreeGrad">
+        <stop offset="0%" stopColor={color} stopOpacity="0.9" />
+        <stop offset="100%" stopColor="#1a0a1a" />
+      </radialGradient>
+    </defs>
+    <circle cx="32" cy="32" r="30" fill="url(#mageTreeGrad)" />
+    <path d="M20 20 L32 12 L44 20 L44 44 L20 44 Z" fill={color} opacity="0.6" />
+    <circle cx="32" cy="32" r="6" fill={color} opacity="0.8" />
+    <text x="32" y="58" textAnchor="middle" fill={color} fontSize="8" fontFamily="serif">ᛟ</text>
+  </svg>
+);
+
+export const TankerTreeIcon: React.FC<IconProps> = ({ className = "w-full h-full", color = "#10b981" }) => (
+  <svg viewBox="0 0 64 64" className={className}>
+    <defs>
+      <radialGradient id="tankerTreeGrad">
+        <stop offset="0%" stopColor={color} stopOpacity="0.9" />
+        <stop offset="100%" stopColor="#0a1a0f" />
+      </radialGradient>
+    </defs>
+    <circle cx="32" cy="32" r="30" fill="url(#tankerTreeGrad)" />
+    <rect x="16" y="20" width="32" height="28" fill={color} opacity="0.6" />
+    <path d="M24 28 L40 28 M24 36 L40 36" stroke={color} strokeWidth="2" />
+    <text x="32" y="58" textAnchor="middle" fill={color} fontSize="8" fontFamily="serif">ᛁ</text>
+  </svg>
+);
+
+// ═══════════════════════════════════════════
 // ICON MAP
 // ═══════════════════════════════════════════
 
 export const iconMap: Record<string, React.FC<IconProps>> = {
+  // Tree Branches
+  attack: AttackTreeIcon,
+  speed: SpeedTreeIcon,
+  defense: DefenseTreeIcon,
+  production: ProductionTreeIcon,
+  bow: BowTreeIcon,
+  sword: SwordTreeIcon,
+  staff: StaffTreeIcon,
+  archer: ArcherTreeIcon,
+  mage: MageTreeIcon,
+  tanker: TankerTreeIcon,
+  
   // Attack
   strength: StrengthIcon,
   critical: CriticalIcon,
