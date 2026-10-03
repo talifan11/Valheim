@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { allSkillTrees, SkillTree, SkillNode } from '../data/skillTreeData';
-import { SkillNodeComponent } from './SkillNode';
+import { iconMap } from './RunicIcons';
 
 export function SkillTreeCalculator() {
   const [selectedTree, setSelectedTree] = useState<SkillTree>(allSkillTrees[0]);
@@ -98,7 +98,7 @@ export function SkillTreeCalculator() {
     if (selectedTree.skills.every(s => getSkillPoints(s.id) === s.maxPoints)) {
       setPrestigeCount(prev => prev + 1);
       resetTree();
-      setAvailablePoints(prev => prev + 10); // Бонус за престиж
+      setAvailablePoints(prev => prev + 10);
       confetti({
         particleCount: 200,
         spread: 120,
@@ -110,7 +110,6 @@ export function SkillTreeCalculator() {
 
   const isTreeMaxed = selectedTree.skills.every(s => getSkillPoints(s.id) === s.maxPoints);
 
-  // Популярные билды
   const recommendedBuilds = [
     { name: 'Берсерк', description: 'Максимальный урон', path: ['atk-1', 'atk-2', 'atk-4', 'atk-5'], popularity: 89, treeId: 'attack' },
     { name: 'Критический снайпер', description: 'Максимальный крит', path: ['atk-1', 'atk-3', 'atk-5'], popularity: 72, treeId: 'attack' },
@@ -144,6 +143,9 @@ export function SkillTreeCalculator() {
 
   const totalSpent = selectedTree.skills.reduce((sum, skill) => sum + getSkillPoints(skill.id), 0);
 
+  // Получение иконки для дерева
+  const TreeIcon = iconMap[selectedTree.icon];
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* Header */}
@@ -159,7 +161,11 @@ export function SkillTreeCalculator() {
       {/* Points Counter + Actions */}
       <div className="glass-dark rounded-lg p-4 mb-6 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="text-3xl">✨</div>
+          <div className="w-8 h-8 text-amber-400">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8Z" />
+            </svg>
+          </div>
           <div>
             <div className="text-xs text-norse-muted uppercase tracking-wider">Доступные очки</div>
             <div className="text-2xl font-bold text-norse-gold">{availablePoints}</div>
@@ -199,32 +205,30 @@ export function SkillTreeCalculator() {
             <div className="mb-4">
               <div className="text-xs text-norse-muted mb-2 uppercase tracking-wider">Экспертные</div>
               <div className="space-y-2">
-                {allSkillTrees.filter(t => ['attack', 'speed', 'defense', 'production'].includes(t.id)).map(tree => (
-                  <motion.button
-                    key={tree.id}
-                    onClick={() => setSelectedTree(tree)}
-                    className={`w-full flex items-center gap-3 p-3 rounded-lg transition-all ${
-                      selectedTree.id === tree.id
-                        ? 'bg-norse-gold/10 border border-norse-gold/30'
-                        : 'hover:bg-white/5 border border-transparent'
-                    }`}
-                    whileHover={{ x: 5 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <img
-                      src={tree.icon}
-                      alt={tree.name}
-                      className="w-10 h-10 rounded-lg object-cover"
-                      style={{
-                        filter: selectedTree.id === tree.id ? `drop-shadow(0 0 8px ${tree.color})` : undefined,
-                      }}
-                    />
-                    <div className="text-left flex-1">
-                      <div className="text-sm font-semibold text-norse-text">{tree.name}</div>
-                      <div className="text-xs text-norse-muted">{tree.description}</div>
-                    </div>
-                  </motion.button>
-                ))}
+                {allSkillTrees.filter(t => ['attack', 'speed', 'defense', 'production'].includes(t.id)).map(tree => {
+                  const Icon = iconMap[tree.icon];
+                  return (
+                    <motion.button
+                      key={tree.id}
+                      onClick={() => setSelectedTree(tree)}
+                      className={`w-full flex items-center gap-3 p-3 rounded-lg transition-all ${
+                        selectedTree.id === tree.id
+                          ? 'bg-norse-gold/10 border border-norse-gold/30'
+                          : 'hover:bg-white/5 border border-transparent'
+                      }`}
+                      whileHover={{ x: 5 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <div className="w-10 h-10">
+                        {Icon && <Icon color={tree.color} />}
+                      </div>
+                      <div className="text-left flex-1">
+                        <div className="text-sm font-semibold text-norse-text">{tree.name}</div>
+                        <div className="text-xs text-norse-muted">{tree.description}</div>
+                      </div>
+                    </motion.button>
+                  );
+                })}
               </div>
             </div>
 
@@ -232,32 +236,30 @@ export function SkillTreeCalculator() {
             <div className="mb-4">
               <div className="text-xs text-norse-muted mb-2 uppercase tracking-wider">Оружейные</div>
               <div className="space-y-2">
-                {allSkillTrees.filter(t => ['bow', 'sword', 'staff'].includes(t.id)).map(tree => (
-                  <motion.button
-                    key={tree.id}
-                    onClick={() => setSelectedTree(tree)}
-                    className={`w-full flex items-center gap-3 p-3 rounded-lg transition-all ${
-                      selectedTree.id === tree.id
-                        ? 'bg-norse-gold/10 border border-norse-gold/30'
-                        : 'hover:bg-white/5 border border-transparent'
-                    }`}
-                    whileHover={{ x: 5 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <img
-                      src={tree.icon}
-                      alt={tree.name}
-                      className="w-10 h-10 rounded-lg object-cover"
-                      style={{
-                        filter: selectedTree.id === tree.id ? `drop-shadow(0 0 8px ${tree.color})` : undefined,
-                      }}
-                    />
-                    <div className="text-left flex-1">
-                      <div className="text-sm font-semibold text-norse-text">{tree.name}</div>
-                      <div className="text-xs text-norse-muted">{tree.description}</div>
-                    </div>
-                  </motion.button>
-                ))}
+                {allSkillTrees.filter(t => ['bow', 'sword', 'staff'].includes(t.id)).map(tree => {
+                  const Icon = iconMap[tree.icon];
+                  return (
+                    <motion.button
+                      key={tree.id}
+                      onClick={() => setSelectedTree(tree)}
+                      className={`w-full flex items-center gap-3 p-3 rounded-lg transition-all ${
+                        selectedTree.id === tree.id
+                          ? 'bg-norse-gold/10 border border-norse-gold/30'
+                          : 'hover:bg-white/5 border border-transparent'
+                      }`}
+                      whileHover={{ x: 5 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <div className="w-10 h-10">
+                        {Icon && <Icon color={tree.color} />}
+                      </div>
+                      <div className="text-left flex-1">
+                        <div className="text-sm font-semibold text-norse-text">{tree.name}</div>
+                        <div className="text-xs text-norse-muted">{tree.description}</div>
+                      </div>
+                    </motion.button>
+                  );
+                })}
               </div>
             </div>
 
@@ -265,25 +267,30 @@ export function SkillTreeCalculator() {
             <div>
               <div className="text-xs text-norse-muted mb-2 uppercase tracking-wider">Профессии</div>
               <div className="space-y-2">
-                {allSkillTrees.filter(t => ['archer', 'mage', 'tanker'].includes(t.id)).map(tree => (
-                  <motion.button
-                    key={tree.id}
-                    onClick={() => setSelectedTree(tree)}
-                    className={`w-full flex items-center gap-3 p-3 rounded-lg transition-all ${
-                      selectedTree.id === tree.id
-                        ? 'bg-norse-gold/10 border border-norse-gold/30'
-                        : 'hover:bg-white/5 border border-transparent'
-                    }`}
-                    whileHover={{ x: 5 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <span className="text-2xl">{tree.icon}</span>
-                    <div className="text-left flex-1">
-                      <div className="text-sm font-semibold text-norse-text">{tree.name}</div>
-                      <div className="text-xs text-norse-muted">{tree.description}</div>
-                    </div>
-                  </motion.button>
-                ))}
+                {allSkillTrees.filter(t => ['archer', 'mage', 'tanker'].includes(t.id)).map(tree => {
+                  const Icon = iconMap[tree.icon];
+                  return (
+                    <motion.button
+                      key={tree.id}
+                      onClick={() => setSelectedTree(tree)}
+                      className={`w-full flex items-center gap-3 p-3 rounded-lg transition-all ${
+                        selectedTree.id === tree.id
+                          ? 'bg-norse-gold/10 border border-norse-gold/30'
+                          : 'hover:bg-white/5 border border-transparent'
+                      }`}
+                      whileHover={{ x: 5 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <div className="w-10 h-10">
+                        {Icon && <Icon color={tree.color} />}
+                      </div>
+                      <div className="text-left flex-1">
+                        <div className="text-sm font-semibold text-norse-text">{tree.name}</div>
+                        <div className="text-xs text-norse-muted">{tree.description}</div>
+                      </div>
+                    </motion.button>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -321,26 +328,26 @@ export function SkillTreeCalculator() {
               </div>
 
               {/* Декоративные руны по углам */}
-              <div className="absolute top-4 left-4 text-6xl opacity-20 text-amber-600 pointer-events-none">ᚱ</div>
-              <div className="absolute top-4 right-4 text-6xl opacity-20 text-amber-600 pointer-events-none">ᚠ</div>
-              <div className="absolute bottom-4 left-4 text-6xl opacity-20 text-amber-600 pointer-events-none">ᛟ</div>
-              <div className="absolute bottom-4 right-4 text-6xl opacity-20 text-amber-600 pointer-events-none">ᛏ</div>
+              <div className="absolute top-4 left-4 text-6xl opacity-20 pointer-events-none" style={{ color: selectedTree.color }}>ᚱ</div>
+              <div className="absolute top-4 right-4 text-6xl opacity-20 pointer-events-none" style={{ color: selectedTree.color }}>ᚠ</div>
+              <div className="absolute bottom-4 left-4 text-6xl opacity-20 pointer-events-none" style={{ color: selectedTree.color }}>ᛟ</div>
+              <div className="absolute bottom-4 right-4 text-6xl opacity-20 pointer-events-none" style={{ color: selectedTree.color }}>ᛏ</div>
 
               {/* Content */}
               <div className="relative z-10">
                 {/* Tree Header */}
                 <div className="flex items-center gap-4 mb-6 pb-4 border-b border-norse-gold/10">
-                  <motion.img
-                    src={selectedTree.icon}
-                    alt={selectedTree.name}
-                    className="w-20 h-20 rounded-lg object-cover"
+                  <motion.div
+                    className="w-20 h-20"
                     style={{
                       filter: `drop-shadow(0 0 15px ${selectedTree.color})`,
                     }}
                     initial={{ scale: 0.8, rotate: -10 }}
                     animate={{ scale: 1, rotate: 0 }}
                     transition={{ type: 'spring', stiffness: 200 }}
-                  />
+                  >
+                    {TreeIcon && <TreeIcon color={selectedTree.color} />}
+                  </motion.div>
                   <div>
                     <h2 className="text-2xl font-bold text-norse-text">{selectedTree.name}</h2>
                     <p className="text-sm text-norse-muted">{selectedTree.description}</p>
@@ -421,19 +428,143 @@ export function SkillTreeCalculator() {
                   </svg>
 
                   {/* Skill Nodes */}
-                  {selectedTree.skills.map(skill => (
-                    <SkillNodeComponent
-                      key={skill.id}
-                      skill={skill}
-                      tree={selectedTree}
-                      points={getSkillPoints(skill.id)}
-                      canUnlock={canUnlockSkill(skill)}
-                      isMaxed={getSkillPoints(skill.id) === skill.maxPoints}
-                      onHover={(e) => handleSkillHover(skill, e)}
-                      onLeave={() => setHoveredSkill(null)}
-                      onClick={() => handleSkillClick(skill)}
-                    />
-                  ))}
+                  {selectedTree.skills.map(skill => {
+                    const points = getSkillPoints(skill.id);
+                    const canUnlock = canUnlockSkill(skill);
+                    const isMaxed = points === skill.maxPoints;
+                    const SkillIcon = iconMap[skill.icon];
+
+                    return (
+                      <motion.div
+                        key={skill.id}
+                        className="absolute cursor-pointer"
+                        style={{
+                          left: `${skill.position.x}%`,
+                          top: `${skill.position.y}%`,
+                        }}
+                        initial={{ x: '-50%', y: '-50%', opacity: 0 }}
+                        animate={{ x: '-50%', y: '-50%', opacity: 1 }}
+                        whileHover={{ 
+                          x: '-50%', 
+                          y: '-50%', 
+                          scale: 1.15 
+                        }}
+                        whileTap={{ 
+                          x: '-50%', 
+                          y: '-50%', 
+                          scale: 0.95 
+                        }}
+                        transition={{ type: 'spring', stiffness: 400 }}
+                        onClick={() => handleSkillClick(skill)}
+                        onMouseEnter={(e) => handleSkillHover(skill, e)}
+                        onMouseLeave={() => setHoveredSkill(null)}
+                      >
+                        <div className="relative">
+                          {/* Внешнее свечение при доступности */}
+                          {canUnlock && points === 0 && (
+                            <motion.div
+                              className="absolute inset-0 rounded-full blur-xl"
+                              style={{
+                                background: `radial-gradient(circle, ${selectedTree.color}40 0%, transparent 70%)`,
+                              }}
+                              animate={{
+                                scale: [1, 1.2, 1],
+                                opacity: [0.5, 0.8, 0.5],
+                              }}
+                              transition={{
+                                duration: 2,
+                                repeat: Infinity,
+                                ease: 'easeInOut',
+                              }}
+                            />
+                          )}
+
+                          {/* Рунический круг вокруг tier 4 */}
+                          {skill.tier === 4 && (
+                            <motion.div
+                              className="absolute inset-[-20px] border-2 border-dashed rounded-full"
+                              style={{
+                                borderColor: `${selectedTree.color}60`,
+                              }}
+                              animate={{ rotate: 360 }}
+                              transition={{
+                                duration: 20,
+                                repeat: Infinity,
+                                ease: 'linear',
+                              }}
+                            />
+                          )}
+
+                          {/* Основная иконка */}
+                          <div
+                            className={`relative w-16 h-16 md:w-20 md:h-20 rounded-full border-4 flex items-center justify-center overflow-hidden transition-all duration-300 ${
+                              canUnlock ? 'cursor-pointer' : 'cursor-not-allowed opacity-70'
+                            }`}
+                            style={{
+                              borderColor: isMaxed ? selectedTree.color : points > 0 ? `${selectedTree.color}80` : '#374151',
+                              background: `linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(0, 0, 0, 0.95) 100%)`,
+                              boxShadow: isMaxed
+                                ? `0 0 30px ${selectedTree.color}80, inset 0 0 20px ${selectedTree.color}40`
+                                : points > 0
+                                ? `0 0 10px ${selectedTree.color}30`
+                                : undefined,
+                            }}
+                          >
+                            {/* Фоновое свечение */}
+                            <div
+                              className="absolute inset-0 opacity-30"
+                              style={{
+                                background: `radial-gradient(circle, ${selectedTree.color} 0%, transparent 70%)`,
+                              }}
+                            />
+
+                            {/* Иконка */}
+                            <div className="w-10 h-10 md:w-12 md:h-12 z-10">
+                              {SkillIcon && <SkillIcon color={selectedTree.color} />}
+                            </div>
+
+                            {/* Счётчик очков */}
+                            <div
+                              className="absolute -bottom-2 -right-2 w-9 h-9 rounded-full bg-black border-2 flex items-center justify-center text-xs font-bold z-20"
+                              style={{
+                                borderColor: isMaxed ? '#fbbf24' : selectedTree.color,
+                                color: isMaxed ? '#fbbf24' : points > 0 ? '#fff' : '#9ca3af',
+                                boxShadow: isMaxed ? '0 0 10px rgba(251, 191, 36, 0.5)' : undefined,
+                              }}
+                            >
+                              {points}/{skill.maxPoints}
+                            </div>
+
+                            {/* Индикатор активной способности */}
+                            {skill.type === 'active' && (
+                              <div
+                                className="absolute -top-2 -left-2 text-white text-[10px] px-2 py-1 rounded-full font-bold z-20 border-2"
+                                style={{
+                                  backgroundColor: '#3b82f6',
+                                  borderColor: '#60a5fa',
+                                  boxShadow: '0 0 10px rgba(59, 130, 246, 0.5)',
+                                }}
+                              >
+                                {skill.keybind}
+                              </div>
+                            )}
+
+                            {/* MAX индикатор */}
+                            {isMaxed && (
+                              <motion.div
+                                className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-amber-500 to-yellow-400 text-black text-[9px] px-2 py-0.5 rounded-full font-bold z-20"
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{ type: 'spring', stiffness: 500 }}
+                              >
+                                MAX
+                              </motion.div>
+                            )}
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
                 </div>
               </div>
             </motion.div>
@@ -533,15 +664,11 @@ export function SkillTreeCalculator() {
             >
               {/* Header */}
               <div className="flex items-center gap-4 mb-4 pb-4 border-b border-norse-gold/20">
-                <div className="relative">
-                  <img
-                    src={hoveredSkill.icon}
-                    alt={hoveredSkill.name}
-                    className="w-16 h-16 rounded-lg object-cover"
-                    style={{
-                      filter: `drop-shadow(0 0 15px ${selectedTree.color})`,
-                    }}
-                  />
+                <div className="relative w-16 h-16">
+                  {(() => {
+                    const HoverIcon = iconMap[hoveredSkill.icon];
+                    return HoverIcon ? <HoverIcon color={selectedTree.color} /> : null;
+                  })()}
                   {getSkillPoints(hoveredSkill.id) === hoveredSkill.maxPoints && (
                     <div className="absolute -top-2 -right-2 w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center text-xs font-bold text-black">
                       MAX
