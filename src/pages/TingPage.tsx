@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Search, Plus } from 'lucide-react';
 import { Breadcrumbs } from '../components/Breadcrumbs';
@@ -11,6 +12,7 @@ import { ThreadListSkeleton } from '../components/ui/Skeleton';
 type FilterType = 'all' | 'new' | 'popular' | 'unanswered' | 'mine';
 
 export function TingPage() {
+  const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [isLoading] = useState(false); // Для демонстрации скелетонов
 
@@ -82,6 +84,7 @@ export function TingPage() {
 
         {/* Кнопка создания темы — усиленная */}
         <motion.button
+          onClick={() => navigate('/ting/new')}
           className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-500 
             text-black font-bold rounded-lg hover:from-amber-500 hover:to-amber-400 
             transition-all shadow-lg hover:shadow-amber-500/50"

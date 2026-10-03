@@ -19,6 +19,7 @@ const CategoryPage = lazy(() => import('./pages/CategoryPage').then(module => ({
 const ThreadPage = lazy(() => import('./pages/ThreadPage').then(module => ({ default: module.ThreadPage })));
 const TagPage = lazy(() => import('./pages/TagPage').then(module => ({ default: module.TagPage })));
 const GalleryPage = lazy(() => import('./pages/GalleryPage').then(module => ({ default: module.GalleryPage })));
+const NewThreadPage = lazy(() => import('./pages/NewThreadPage').then(module => ({ default: module.NewThreadPage })));
 
 function LoadingSpinner() {
   return (
@@ -45,6 +46,7 @@ function App() {
                 <Route path="/skill-tree" element={<SkillTreePage />} />
                 {/* Форум Тинг */}
                 <Route path="/ting" element={<TingPage />} />
+                <Route path="/ting/new" element={<NewThreadPage />} />
                 <Route path="/ting/tag/:tagName" element={<TagPage />} />
                 <Route path="/ting/:categorySlug" element={<CategoryPage />} />
                 <Route path="/ting/:categorySlug/:threadId" element={<ThreadPage />} />
