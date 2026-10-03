@@ -54,6 +54,19 @@
   --biome-background: #141c17;
   --biome-card: #1a231d;
   
+  /* Forum tokens */
+  --forum-bg: #0B0E14;
+  --forum-surface: #141A24;
+  --forum-surface-hover: #1A2130;
+  --forum-border: #232B3A;
+  --forum-text-primary: #E8EAED;
+  --forum-text-secondary: #A8B0BD;
+  --forum-text-muted: #6B7280;
+  --forum-accent: #C89B3C;
+  --forum-link: #6BA3FF;
+  --forum-success: #4ADE80;
+  --forum-danger: #F87171;
+  
   /* Typography */
   --font-display: 'Cormorant Garamond', serif;
   --font-body: 'Manrope', sans-serif;

@@ -6,6 +6,7 @@ import { Layout } from './components/Layout';
 import { HUD } from './components/HUD';
 import { HomePage } from './pages/HomePage';
 import { ServersPage } from './pages/ServersPage';
+import { TingPage } from './pages/TingPage';
 
 // Lazy load тяжёлых страниц
 const WikiPage = lazy(() => import('./pages/WikiPage').then(module => ({ default: module.WikiPage })));
@@ -14,6 +15,8 @@ const CommunityPage = lazy(() => import('./pages/CommunityPage').then(module => 
 const ShopPage = lazy(() => import('./pages/ShopPage').then(module => ({ default: module.ShopPage })));
 const ProfilePage = lazy(() => import('./pages/ProfilePage').then(module => ({ default: module.ProfilePage })));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(module => ({ default: module.NotFoundPage })));
+const CategoryPage = lazy(() => import('./pages/CategoryPage').then(module => ({ default: module.CategoryPage })));
+const ThreadPage = lazy(() => import('./pages/ThreadPage').then(module => ({ default: module.ThreadPage })));
 
 function LoadingSpinner() {
   return (
@@ -38,6 +41,10 @@ function App() {
                 <Route path="/shop" element={<ShopPage />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/skill-tree" element={<SkillTreePage />} />
+                {/* Форум Тинг */}
+                <Route path="/ting" element={<TingPage />} />
+                <Route path="/ting/:categorySlug" element={<CategoryPage />} />
+                <Route path="/ting/:categorySlug/:threadId" element={<ThreadPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Suspense>
