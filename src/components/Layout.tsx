@@ -5,6 +5,7 @@ import { Download, User, LogIn, Menu, X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useUser } from '../context/UserContext';
 import { BiomeSelector } from './BiomeSelector';
+import { NotificationsBell } from './social/NotificationsBell';
 
 // Компонент для навигации с активным состоянием
 function NavLink({ to, children, rune }: { to: string; children: React.ReactNode; rune: string }) {
@@ -134,6 +135,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <Download size={16} />
                 <span className="hidden md:inline">Скачать</span>
               </a>
+
+              {/* Колокольчик уведомлений */}
+              {isLoggedIn && <NotificationsBell />}
 
               {/* Войти / Профиль */}
               {isLoggedIn ? (
