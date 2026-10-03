@@ -5,7 +5,7 @@ import { Search, Plus } from 'lucide-react';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { ThreadCard } from '../components/forum/ThreadCard';
 import { ForumSidebar } from '../components/forum/ForumSidebar';
-import { threads, categories } from '../data/forumData';
+import { threads, categories, subCategories } from '../data/forumData';
 
 type FilterType = 'all' | 'new' | 'popular' | 'resolved' | 'mine';
 
@@ -14,6 +14,7 @@ export function CategoryPage() {
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
 
   const category = categories.find(c => c.slug === categorySlug);
+  const categorySubCategories = subCategories.filter(s => s.categoryId === category?.id);
 
   if (!category) {
     return (
@@ -124,6 +125,34 @@ export function CategoryPage() {
           </button>
         ))}
       </motion.div>
+
+      {/* Подкатегории */}
+      {categorySubCategories.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mb-6"
+        >
+          <h3 className="text-sm font-semibold text-amber-400 uppercase tracking-wide mb-3">
+            Подкатегории
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {categorySubCategories.map(subCat => (
+              <div
+                key={subCat.id}
+                className="p-3 rounded-lg bg-black/30 border border-amber-900/20 hover:border-amber-600/40 transition-colors cursor-pointer"
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-lg text-amber-400">{subCat.rune}</span>
+                  <span className="text-sm font-semibold text-norse-text">{subCat.title}</span>
+                </div>
+                <p className="text-xs text-norse-muted">{subCat.description}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      )}
 
       {/* Основной контент */}
       <div className="grid lg:grid-cols-[1fr_280px] gap-6">

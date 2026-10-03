@@ -18,6 +18,7 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(module => ({
 const CategoryPage = lazy(() => import('./pages/CategoryPage').then(module => ({ default: module.CategoryPage })));
 const ThreadPage = lazy(() => import('./pages/ThreadPage').then(module => ({ default: module.ThreadPage })));
 const TagPage = lazy(() => import('./pages/TagPage').then(module => ({ default: module.TagPage })));
+const GalleryPage = lazy(() => import('./pages/GalleryPage').then(module => ({ default: module.GalleryPage })));
 
 function LoadingSpinner() {
   return (
@@ -47,6 +48,9 @@ function App() {
                 <Route path="/ting/tag/:tagName" element={<TagPage />} />
                 <Route path="/ting/:categorySlug" element={<CategoryPage />} />
                 <Route path="/ting/:categorySlug/:threadId" element={<ThreadPage />} />
+                
+                {/* Галерея */}
+                <Route path="/gallery" element={<GalleryPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Suspense>
