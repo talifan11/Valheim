@@ -9,6 +9,7 @@ import { threads, posts, categories, Post } from '../data/forumData';
 import { RankBadge } from '../components/forum/RankBadge';
 import { ReadersNow } from '../components/social/ReadersNow';
 import { FollowButton } from '../components/social/FollowButton';
+import { StickyReplyBar } from '../components/social/StickyReplyBar';
 
 export function ThreadPage() {
   const { threadId } = useParams<{ threadId: string }>();
@@ -146,14 +147,14 @@ export function ThreadPage() {
             />
           ))}
 
-          {/* Поле ответа */}
+          {/* Поле ответа — десктоп */}
           {!thread.isLocked && (
             <motion.form
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
               onSubmit={handleSubmitReply}
-              className="p-4 rounded-lg bg-black/30 border border-amber-900/20"
+              className="hidden lg:block p-4 rounded-lg bg-black/30 border border-amber-900/20"
             >
               <label htmlFor="reply" className="block text-sm font-semibold text-norse-text mb-2">
                 Ответить в теме
@@ -180,6 +181,14 @@ export function ThreadPage() {
                 </button>
               </div>
             </motion.form>
+          )}
+
+          {/* Sticky поле ответа — мобильное */}
+          {!thread.isLocked && (
+            <StickyReplyBar onSubmit={(text) => {
+              setReplyText(text);
+              handleSubmitReply({ preventDefault: () => {} } as React.FormEvent);
+            }} />
           )}
 
           {thread.isLocked && (

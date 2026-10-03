@@ -6,6 +6,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useUser } from '../context/UserContext';
 import { BiomeSelector } from './BiomeSelector';
 import { NotificationsBell } from './social/NotificationsBell';
+import { StickyBottomBar } from './social/StickyBottomBar';
 
 // Компонент для навигации с активным состоянием
 function NavLink({ to, children, rune }: { to: string; children: React.ReactNode; rune: string }) {
@@ -17,7 +18,7 @@ function NavLink({ to, children, rune }: { to: string; children: React.ReactNode
       to={to}
       className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs transition-all relative ${
         isActive
-          ? 'bg-norse-gold/10 text-norse-gold border border-norse-gold/20'
+          ? 'bg-norse-gold/10 text-norse-gold font-bold border border-norse-gold/30'
           : 'text-norse-muted hover:text-norse-text hover:bg-white/5'
       }`}
       aria-current={isActive ? 'page' : undefined}
@@ -25,7 +26,11 @@ function NavLink({ to, children, rune }: { to: string; children: React.ReactNode
       <span className="text-xs font-serif">{rune}</span>
       <span>{children}</span>
       {isActive && (
-        <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-amber-400 rounded-full" />
+        <motion.span
+          layoutId="activeTabIndicator"
+          className="absolute -bottom-1 left-0 right-0 h-0.5 bg-amber-400 rounded-full"
+          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        />
       )}
     </Link>
   );
@@ -224,7 +229,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </motion.header>
 
       {/* Main Content */}
-      <main id="main-content" className="pt-16 md:pt-20">
+      <main id="main-content" className="pt-16 md:pt-20 pb-16 lg:pb-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
@@ -238,6 +243,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </motion.div>
         </AnimatePresence>
       </main>
+
+      {/* Sticky Bottom Bar для мобильных */}
+      <StickyBottomBar />
 
       {/* Footer */}
       <footer className="border-t border-norse-gold/8 py-8 px-4">

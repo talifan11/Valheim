@@ -6,11 +6,13 @@ import { ThreadCard } from '../components/forum/ThreadCard';
 import { ForumSidebar, ForumCategoriesSidebar } from '../components/forum/ForumSidebar';
 import { threads, categories } from '../data/forumData';
 import { ActivityFeed } from '../components/social/ActivityFeed';
+import { ThreadListSkeleton } from '../components/ui/Skeleton';
 
 type FilterType = 'all' | 'new' | 'popular' | 'unanswered' | 'mine';
 
 export function TingPage() {
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
+  const [isLoading] = useState(false); // Для демонстрации скелетонов
 
   const filters: { id: FilterType; label: string }[] = [
     { id: 'all', label: 'Все' },
@@ -78,11 +80,17 @@ export function TingPage() {
           />
         </div>
 
-        {/* Кнопка создания темы */}
-        <button className="btn-viking btn-viking-primary flex items-center gap-2 justify-center">
-          <Plus size={18} />
+        {/* Кнопка создания темы — усиленная */}
+        <motion.button
+          className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-500 
+            text-black font-bold rounded-lg hover:from-amber-500 hover:to-amber-400 
+            transition-all shadow-lg hover:shadow-amber-500/50"
+          whileHover={{ scale: 1.02, y: -1 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <span className="text-xl font-serif">ᛏ</span>
           <span>Создать тему</span>
-        </button>
+        </motion.button>
       </motion.div>
 
       {/* Фильтры */}
@@ -116,29 +124,31 @@ export function TingPage() {
 
         {/* Лента тем */}
         <div className="space-y-3">
-          {sortedThreads.length > 0 ? (
-            sortedThreads.map(thread => {
-              const category = categories.find(c => c.id === thread.categoryId);
-              return (
-                <ThreadCard
-                  key={thread.id}
-                  thread={thread}
-                  categorySlug={category?.slug || 'ting'}
-                />
-              );
-            })
+          {isLoading ? (
+            <ThreadListSkeleton count={5} />
+          ) : sortedThreads.length > 0 ? (
+            <>
+              {sortedThreads.map(thread => {
+                const category = categories.find(c => c.id === thread.categoryId);
+                return (
+                  <ThreadCard
+                    key={thread.id}
+                    thread={thread}
+                    categorySlug={category?.slug || 'ting'}
+                  />
+                );
+              })}
+
+              {/* Загрузить ещё */}
+              <button className="w-full py-3 text-sm text-norse-muted hover:text-amber-400 transition-colors">
+                Загрузить ещё
+              </button>
+            </>
           ) : (
             <div className="text-center py-12 text-norse-muted">
               <p className="text-lg mb-2">Нет тем для отображения</p>
               <p className="text-sm">Попробуйте изменить фильтры или создайте первую тему</p>
             </div>
-          )}
-
-          {/* Загрузить ещё */}
-          {sortedThreads.length > 0 && (
-            <button className="w-full py-3 text-sm text-norse-muted hover:text-amber-400 transition-colors">
-              Загрузить ещё
-            </button>
           )}
         </div>
 
