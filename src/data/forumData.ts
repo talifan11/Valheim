@@ -60,6 +60,32 @@ export interface TopAuthor {
   rank: 'newcomer' | 'viking' | 'jarl' | 'legend';
 }
 
+// Подкатегории
+export interface SubCategory {
+  id: string;
+  categoryId: string;
+  title: string;
+  description: string;
+  rune: string;
+}
+
+export const subCategories: SubCategory[] = [
+  // Подкатегории для Кузницы
+  { id: 'sub-1', categoryId: 'cat-3', title: 'Билды', description: 'Билды персонажей, распределение навыков', rune: 'ᚲ' },
+  { id: 'sub-2', categoryId: 'cat-3', title: 'Гайды по боссам', description: 'Тактики против боссов', rune: 'ᛏ' },
+  { id: 'sub-3', categoryId: 'cat-3', title: 'Крафт', description: 'Рецепты, материалы, оптимизация', rune: 'ᚠ' },
+  
+  // Подкатегории для Походов
+  { id: 'sub-4', categoryId: 'cat-4', title: 'Поиск группы', description: 'LFG - поиск команды для рейдов', rune: 'ᚱ' },
+  { id: 'sub-5', categoryId: 'cat-4', title: 'Рейды', description: 'Организация рейдов на боссов', rune: 'ᛏ' },
+  { id: 'sub-6', categoryId: 'cat-4', title: 'Ивенты', description: 'Совместные мероприятия', rune: 'ᛖ' },
+  
+  // Подкатегории для Тинга
+  { id: 'sub-7', categoryId: 'cat-6', title: 'Вопросы новичков', description: 'Помощь начинающим игрокам', rune: 'ᚠ' },
+  { id: 'sub-8', categoryId: 'cat-6', title: 'Обсуждения', description: 'Общие темы, дискуссии', rune: 'ᛏ' },
+  { id: 'sub-9', categoryId: 'cat-6', title: 'Оффтоп', description: 'Всё что не относится к игре', rune: 'ᛟ' },
+];
+
 // Категории форума
 export const categories: Category[] = [
   // Блок «Вести»
