@@ -97,11 +97,17 @@ export function CategoryPage() {
           />
         </div>
 
-        {/* Кнопка создания темы */}
-        <button className="btn-viking btn-viking-primary flex items-center gap-2 justify-center">
-          <Plus size={18} />
+        {/* Кнопка создания темы — усиленная */}
+        <motion.button
+          className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-500 
+            text-black font-bold rounded-lg hover:from-amber-500 hover:to-amber-400 
+            transition-all shadow-lg hover:shadow-amber-500/50"
+          whileHover={{ scale: 1.02, y: -1 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <span className="text-xl font-serif">ᛏ</span>
           <span>Создать тему</span>
-        </button>
+        </motion.button>
       </motion.div>
 
       {/* Фильтры */}

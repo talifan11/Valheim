@@ -35,12 +35,12 @@ export function ActivityFeed() {
             transition={{ delay: index * 0.05 }}
             className="flex items-start gap-2 text-xs"
           >
-            <span className="text-amber-400 text-sm mt-0.5">{typeIcons[activity.type]}</span>
+            <span className="text-amber-400/60 text-sm mt-0.5">{typeIcons[activity.type]}</span>
             <div className="flex-1 min-w-0">
-              <span className="text-norse-text font-medium">@{activity.username}</span>
-              <span className="text-norse-muted"> {typeLabels[activity.type]} </span>
-              <span className="text-norse-text">«{activity.target}»</span>
-              <div className="text-norse-muted text-[10px] mt-0.5">{activity.createdAt}</div>
+              <span className="text-norse-text/80 font-medium">@{activity.username}</span>
+              <span className="text-norse-muted/60"> {typeLabels[activity.type]} </span>
+              <span className="text-norse-text/80">«{activity.target}»</span>
+              <div className="text-norse-muted/50 text-[10px] mt-0.5">{activity.createdAt}</div>
             </div>
           </motion.div>
         ))}

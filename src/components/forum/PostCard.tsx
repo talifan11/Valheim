@@ -85,7 +85,7 @@ export function PostCard({ post, index, isThreadAuthor }: PostCardProps) {
           )}
 
           {/* Тело поста */}
-          <div className="text-norse-text leading-relaxed whitespace-pre-line mb-4">
+          <div className="text-norse-text leading-[1.7] whitespace-pre-line mb-4">
             {post.body}
           </div>
 

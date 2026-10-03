@@ -58,6 +58,36 @@ export function DailyTasks() {
       completed: progress.completedTasks.includes('visit-community'),
       action: () => window.open('https://discord.gg/valheim', '_blank'),
     },
+    // Форумные задания
+    {
+      id: 'forum-reply',
+      title: 'Ответь новичку',
+      description: 'Ответь на вопрос в Тинге',
+      instruction: 'Открой Тинг → найди тему с вопросом → напиши ответ',
+      icon: <Users size={20} />,
+      points: 20,
+      completed: progress.completedTasks.includes('forum-reply'),
+      action: () => window.location.hash = '#/ting',
+    },
+    {
+      id: 'forum-useful',
+      title: 'Получи признание',
+      description: 'Получи 3 «Полезно» в Тинге',
+      instruction: 'Пиши полезные ответы → получай реакции от других игроков',
+      icon: <BookOpen size={20} />,
+      points: 15,
+      completed: progress.completedTasks.includes('forum-useful'),
+    },
+    {
+      id: 'forum-guide',
+      title: 'Создай гайд',
+      description: 'Создай тему с тегом #гайд',
+      instruction: 'Открой Тинг → нажми «Создать тему» → добавь тег #гайд',
+      icon: <Map size={20} />,
+      points: 25,
+      completed: progress.completedTasks.includes('forum-guide'),
+      action: () => window.location.hash = '#/ting/new',
+    },
   ];
 
   const completedCount = tasks.filter(t => t.completed).length;

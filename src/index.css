@@ -633,12 +633,21 @@ body::before {
 *:focus-visible {
   outline: 2px solid #C89B3C;
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: inherit;
 }
 
 /* Убираем outline для мыши */
 *:focus:not(:focus-visible) {
   outline: none;
+}
+
+/* Улучшение контраста текста */
+.text-norse-muted {
+  color: #9CA3AF; /* Увеличил яркость с #6B7280 до #9CA3AF для лучшего контраста */
+}
+
+.text-norse-text {
+  color: #F3F4F6; /* Увеличил яркость с #E5E7EB до #F3F4F6 */
 }
 
 /* Skip link для клавиатурных пользователей */
