@@ -52,7 +52,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { path: '/servers', label: 'Серверы', rune: 'ᚠ' },
     { path: '/wiki', label: 'Вики', rune: 'ᚱ' },
     { path: '/skill-tree', label: 'Таланты', rune: 'ᛏ' },
-    { path: '/community', label: 'Сообщество', rune: 'ᛊ' },
+    { path: '/ting', label: 'Тинг', rune: 'ᛏ' },
     { path: '/shop', label: 'Магазин', rune: 'ᚦ' },
   ];
 
