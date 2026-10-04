@@ -1180,7 +1180,73 @@ git push origin feature/new-skill-tree
 
 ## 📝 Changelog
 
-### v2.1.0 (Текущая версия) - Арт-пасс и полировка лендинга
+### v2.2.0 (Текущая версия) - Фикс-пасс v4: полировка лендинга
+
+**Реализовано 7 правок:**
+
+1. ✅ **Убраны пустые зелёные полосы-разделители**
+   - RuneDivider перенесён внутрь каждой секции (в начало pt)
+   - TextureOverlay: opacity снижена до 0.03 + добавлен серый оверлей bg-gray-900/20
+   - Чередование фонов сохранено, но без зелени
+
+2. ✅ **Единый источник моковых данных**
+   - Создан `src/data/serverData.ts` — единый источник данных серверов
+   - `useServerStatus.ts` импортирует из serverData.ts
+   - `landingData.ts` импортирует из serverData.ts
+   - HUD и превью HUD синхронизированы с UserContext (один current XP)
+
+3. ✅ **Ранговая шкала с визуальной индикацией**
+   - Пройденные ранги: залиты янтарём + glow
+   - Текущий ранг: янтарное кольцо + пульсирующая анимация
+   - Будущие ранги: серый пунктир + приглушённый текст
+   - Соединительная линия заливается янтарём до текущего ранга
+   - Синхронизация с UserContext для отображения реального прогресса
+
+4. ✅ **Слайдер боссов с градиентной маской**
+   - Градиентные маски по краям (fade в фон секции)
+   - Стрелки влево/вправо на desktop (скрыты на mobile)
+   - Прогресс-линия под слайдером
+   - Scroll-snap на mobile сохранён
+   - Руна перенесена из портрета в плашку с именем босса (16px)
+
+5. ✅ **Блок "Народ" с крупными цифрами**
+   - Цифры Cormorant 40-56px янтарём над описанием
+   - Count-up анимация при входе в viewport (600ms)
+   - Уважает `prefers-reduced-motion`
+   - Хук `useCountUp` для анимации счётчиков
+
+6. ✅ **Дифференциация плиток "Народ"**
+   - Discord: полоса из 5 аватарок (CSS-круги с инициалами) + зелёная точка online
+   - Тинг: заголовок последней темы + дата мелким шрифтом
+   - Вики: заголовок последней статьи + дата
+   - Стиль рамок порталный (card-wood + card-corner)
+
+7. ✅ **Руна убрана с портретов боссов**
+   - Перенесена в плашку с именем босса
+   - Размер 16px, янтарный цвет
+   - Рядом с заголовком имени
+
+**Технические детали:**
+- Размер бандла: 389KB JS, 88KB CSS
+- LandingPage: 43KB (увеличился из-за count-up анимации и слайдера)
+- Новый файл: `src/data/serverData.ts` — единый источник данных серверов
+- Новый хук: `useCountUp` в CommunitySection для анимации счётчиков
+
+**Обновлённые файлы:**
+- `src/pages/Landing/components/TextureOverlay.tsx` — opacity 0.03 + серый оверлей
+- `src/pages/Landing/LandingPage.tsx` — убраны отдельные RuneDivider
+- `src/pages/Landing/PillarsSection.tsx` — добавлен RuneDivider внутрь
+- `src/pages/Landing/CitySection.tsx` — добавлен RuneDivider внутрь
+- `src/pages/Landing/BossesSection.tsx` — слайдер с маской, стрелками, прогресс-линией
+- `src/pages/Landing/ProgressionSection.tsx` — ранговая шкала с визуальной индикацией
+- `src/pages/Landing/CommunitySection.tsx` — крупные цифры, count-up, дифференциация
+- `src/pages/Landing/ChroniclesSection.tsx` — добавлен RuneDivider внутрь
+- `src/pages/Landing/ShopPreviewSection.tsx` — добавлен RuneDivider внутрь
+- `src/hooks/useServerStatus.ts` — импортирует из serverData.ts
+- `src/data/landingData.ts` — импортирует из serverData.ts
+- `CONCEPT.md` — документация
+
+### v2.1.0 - Арт-пасс и полировка лендинга
 
 **Реализовано:**
 
