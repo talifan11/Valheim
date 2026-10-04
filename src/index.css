@@ -623,6 +623,36 @@ body::before {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+  
+  /* Отключаем угли при reduced motion */
+  .ember {
+    display: none;
+  }
+}
+
+/* Угли в hero */
+@keyframes ember {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-60vh) scale(0.4);
+    opacity: 0;
+  }
+}
+
+/* Scrollbar hide для горизонтального скролла */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* ═══════════════════════════════════════════
