@@ -247,7 +247,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* Sticky Bottom Bar для мобильных */}
       <StickyBottomBar />
 
-      {/* Footer */}
+      {/* Footer — скрыт на лендинге */}
+      {location.pathname !== '/' && (
       <footer className="border-t border-norse-gold/8 py-8 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-3 gap-6 mb-6">
@@ -324,6 +325,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </footer>
+      )}
     </div>
   );
 }

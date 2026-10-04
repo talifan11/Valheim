@@ -1180,7 +1180,94 @@ git push origin feature/new-skill-tree
 
 ## 📝 Changelog
 
-### v2.0.0 (Текущая версия) - Культовый лендинг
+### v2.1.0 (Текущая версия) - Арт-пасс и полировка лендинга
+
+**Реализовано:**
+
+1. ✅ **Арт-пасс — 9 сгенерированных изображений**
+   - `hero-shore` (1920×1080) — пустой северный берег на закате с драккаром
+   - 6 портретов боссов (512×512): Эйктюрнир, Старейшина, Костяная Масса, Модер, Яглут, Королева
+   - `city-panorama` (1600×900) — викингское поселение на утёсе ночью
+   - `og-cover` (1200×630) — янтарная эмблема со скрещёнными топорами для OG-превью
+   - Все арты в едином style-lock: Dark Norse fantasy, painterly brushwork, desaturated palette
+
+2. ✅ **Фикс двойного футера**
+   - На `/` — только футер лендинга (LandingFooter)
+   - На остальных роутах — глобальный футер Layout
+   - Условный рендеринг через `location.pathname !== '/'`
+
+3. ✅ **TextureOverlay компонент**
+   - SVG-текстура шума с настраиваемой прозрачностью
+   - Используется в блоках 2, 5, 7 для глубины
+   - `aria-hidden="true"` для доступности
+
+4. ✅ **RuneDivider компонент**
+   - Рунические разделители между актами
+   - Градиентные линии с руной по центру
+   - Руны по актам: ᛏ ᛚ ᛟ ᚦ ᛊ ᛒ ᚠ
+
+5. ✅ **Embers компонент (угли в hero)**
+   - 10 CSS-частиц с разными параметрами
+   - Анимация `ember` — подъём вверх с затуханием
+   - Уважает `prefers-reduced-motion`
+   - `aria-hidden="true"`
+
+6. ✅ **HeroSection обновлён**
+   - Параллакс фона через `useScroll` + `useTransform`
+   - Overline: `ᚱ Сезон IV · День 47`
+   - Угли (Embers) вместо статичных частиц
+   - Сгенерированный hero-арт вместо градиента
+   - text-shadow для заголовка
+   - Preload hero-арта в index.html
+
+7. ✅ **BossesSection обновлён**
+   - Использует сгенерированные портреты боссов
+   - Hover-эффект: подъём 4px, наклон 0.5deg, подсветка рамки
+   - Виньетка и градиенты для глубины
+   - Тёмно-красный фон секции (#10080A)
+
+8. ✅ **CitySection обновлён**
+   - Использует сгенерированный city-panorama
+   - Виньетка и градиенты для интеграции с фоном
+   - `loading="lazy"` для оптимизации
+
+9. ✅ **SkillTreeCalculator обновлён**
+   - Заменён эмодзи ✨ на компонент Sparkles из lucide-react
+   - Все эмодзи удалены из кода
+
+10. ✅ **CSS-стили для угля**
+    - `@keyframes ember` — анимация подъёма частиц
+    - `.scrollbar-hide` — скрытие скроллбара для горизонтального скролла
+    - Уважает `prefers-reduced-motion`
+
+11. ✅ **OG-теги обновлены**
+    - Используется сгенерированный og-cover
+    - Preload hero-арта для ускорения загрузки
+
+**Технические детали:**
+- Размер бандла: 389KB JS, 86KB CSS
+- LandingPage: 36KB (увеличился из-за TextureOverlay и RuneDivider)
+- Все изображения lazy-loaded кроме hero (preload)
+- Параллакс через Framer Motion `useScroll` + `useTransform`
+
+**Новые файлы:**
+- `src/pages/Landing/components/TextureOverlay.tsx`
+- `src/pages/Landing/components/RuneDivider.tsx`
+- `src/pages/Landing/components/Embers.tsx`
+
+**Обновлённые файлы:**
+- `src/components/Layout.tsx` — скрыт футер на лендинге
+- `src/pages/Landing/HeroSection.tsx` — параллакс, угли, overline, hero-арт
+- `src/pages/Landing/BossesSection.tsx` — сгенерированные портреты боссов
+- `src/pages/Landing/CitySection.tsx` — city-panorama
+- `src/pages/Landing/LandingPage.tsx` — TextureOverlay и RuneDivider между блоками
+- `src/components/SkillTreeCalculator.tsx` — ✨ → Sparkles
+- `src/data/landingData.ts` — добавлено поле `image` в Boss
+- `src/index.css` — стили для угля и scrollbar-hide
+- `index.html` — preload hero-арта, обновлённые OG-теги
+- `CONCEPT.md` — документация
+
+### v2.0.0 - Культовый лендинг
 
 **Реализовано:**
 

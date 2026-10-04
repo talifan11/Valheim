@@ -10,6 +10,8 @@ import { ChroniclesSection } from './ChroniclesSection';
 import { ShopPreviewSection } from './ShopPreviewSection';
 import { FinalCTASection } from './FinalCTASection';
 import { LandingFooter } from './Footer';
+import { TextureOverlay } from './components/TextureOverlay';
+import { RuneDivider } from './components/RuneDivider';
 
 export function LandingPage() {
   return (
@@ -21,26 +23,60 @@ export function LandingPage() {
       {/* Блок 1: Hero — «Зов» */}
       <HeroSection />
 
+      {/* Разделитель */}
+      <RuneDivider rune="ᛏ" />
+
       {/* Блок 2: Берег — «Три столпа сервера» */}
-      <PillarsSection />
+      <div className="relative bg-[#0E1219]">
+        <TextureOverlay opacity={0.05} />
+        <PillarsSection />
+      </div>
+
+      {/* Разделитель */}
+      <RuneDivider rune="ᛚ" />
 
       {/* Блок 3: Город — «Что ты построишь» */}
       <CitySection />
 
+      {/* Разделитель */}
+      <RuneDivider rune="ᛟ" />
+
       {/* Блок 4: Битвы — «С кем сразишься» */}
       <BossesSection />
 
+      {/* Разделитель */}
+      <RuneDivider rune="ᚦ" />
+
       {/* Блок 5: Путь — «Как растёшь» */}
-      <ProgressionSection />
+      <div className="relative bg-[#0B0E14]">
+        <TextureOverlay opacity={0.05} />
+        <ProgressionSection />
+      </div>
+
+      {/* Разделитель */}
+      <RuneDivider rune="ᛊ" />
 
       {/* Блок 6: Народ — «С кем идёшь» */}
-      <CommunitySection />
+      <div className="relative bg-[#0E1219]">
+        <CommunitySection />
+      </div>
+
+      {/* Разделитель */}
+      <RuneDivider rune="ᛒ" />
 
       {/* Блок 7: Хроники — «Что уже произошло» */}
-      <ChroniclesSection />
+      <div className="relative bg-[#0B0E14]">
+        <TextureOverlay opacity={0.05} />
+        <ChroniclesSection />
+      </div>
+
+      {/* Разделитель */}
+      <RuneDivider rune="ᚠ" />
 
       {/* Блок 8: Магазин — «Что можно получить» */}
-      <ShopPreviewSection />
+      <div className="relative bg-[#0E1219]">
+        <ShopPreviewSection />
+      </div>
 
       {/* Блок 9: Призыв — «Финальный CTA» */}
       <FinalCTASection />

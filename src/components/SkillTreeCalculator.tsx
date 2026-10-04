@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import confetti from 'canvas-confetti';
+import { Sparkles } from 'lucide-react';
 import { allSkillTrees, SkillTree, SkillNode } from '../data/skillTreeData';
 import { iconMap } from './RunicIcons';
 
@@ -162,9 +163,7 @@ export function SkillTreeCalculator() {
       <div className="glass-dark rounded-lg p-4 mb-6 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="w-8 h-8 text-amber-400">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8Z" />
-            </svg>
+            <Sparkles size={32} />
           </div>
           <div>
             <div className="text-xs text-norse-muted uppercase tracking-wider">Доступные очки</div>

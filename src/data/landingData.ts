@@ -11,6 +11,7 @@ export interface Boss {
   description: string;
   level: string;
   rune: string;
+  image: string;
 }
 
 export interface Rank {
@@ -69,36 +70,42 @@ export const bosses: Boss[] = [
     description: 'Олень с молниями в рогах. Первый, кого ты встретишь.',
     level: 'Испытание для Новичка',
     rune: 'ᚠ',
+    image: 'https://image.qwenlm.ai/generated-images/3aed2245-861a-4584-bcb4-0819f2726622/_result.png',
   },
   {
     name: 'Старейшина',
     description: 'Древнее дерево с красными глазами. Горит, но не сдаётся.',
     level: 'Испытание для Викинга',
     rune: 'ᚦ',
+    image: 'https://image.qwenlm.ai/generated-images/b253ca10-7739-4deb-9331-50afc0aa20b3/_result.png',
   },
   {
     name: 'Костяная Масса',
     description: 'Сгусток костей и плоти. Бей дробящим — иначе не возьмёт.',
     level: 'Испытание для Викинга',
     rune: 'ᛗ',
+    image: 'https://image.qwenlm.ai/generated-images/2cc1577f-a38c-4bd2-b94f-90c8767ad87b/_result.png',
   },
   {
     name: 'Модер',
     description: 'Ледяной дракон. Летает, плюётся льдом, ненавидит огонь.',
     level: 'Испытание для Ярла',
     rune: 'ᛁ',
+    image: 'https://image.qwenlm.ai/generated-images/702d62e5-6d4e-48ab-98e3-19eb7f3bb471/_result.png',
   },
   {
     name: 'Яглут',
     description: 'Король фулингов. Магия, молнии, телепортация.',
     level: 'Испытание для Ярла',
     rune: 'ᛊ',
+    image: 'https://image.qwenlm.ai/generated-images/35b92111-2a4e-4fb4-aee0-3dec906c1d9d/_result.png',
   },
   {
     name: 'Королева',
     description: 'Гигантский искатель. Яд, миньоны, смерть с одного удара.',
     level: 'Испытание для Легенды',
     rune: 'ᛟ',
+    image: 'https://image.qwenlm.ai/generated-images/930cd06f-c444-4fc6-8647-9203984cd859/_result.png',
   },
 ];
 
