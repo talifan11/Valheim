@@ -2,10 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { shopItems } from '../../data/landingData';
+import { RuneDivider } from './components/RuneDivider';
 
 export function ShopPreviewSection() {
   return (
     <section className="py-24 px-6">
+      <RuneDivider rune="ᚠ" />
       <div className="max-w-6xl mx-auto">
         <motion.h2
           className="font-[Cormorant] text-4xl md:text-5xl font-bold text-center mb-4 text-norse-text"

@@ -1,4 +1,5 @@
 // Данные для лендинга
+import { serverData } from './serverData';
 
 export interface Pillar {
   rune: string;
@@ -34,17 +35,18 @@ export interface ShopItem {
   rune: string;
 }
 
-export interface ServerStatus {
-  name: string;
-  online: number;
-  max: number;
-}
-
 export interface CommunityStats {
   discord: number;
   ting: number;
   wiki: number;
 }
+
+// Единый источник данных серверов для лендинга
+export const serverStatus = serverData.map(s => ({
+  name: s.name,
+  online: s.players,
+  max: s.maxPlayers,
+}));
 
 export const pillars: Pillar[] = [
   {
@@ -184,12 +186,6 @@ export const shopItems: ShopItem[] = [
     price: '1000 ₽',
     rune: 'ᚠ',
   },
-];
-
-export const serverStatus: ServerStatus[] = [
-  { name: 'Городской', online: 47, max: 50 },
-  { name: 'Чёрный Лес', online: 12, max: 20 },
-  { name: 'Горы', online: 8, max: 20 },
 ];
 
 export const communityStats: CommunityStats = {

@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { RuneDivider } from './components/RuneDivider';
 
 export function CitySection() {
   return (
     <section className="py-24 px-6 bg-[#0B0E14]">
+      <RuneDivider rune="ᛚ" />
       <div className="max-w-6xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Левая колонка — текст */}

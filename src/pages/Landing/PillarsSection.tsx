@@ -1,10 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { pillars } from '../../data/landingData';
+import { RuneDivider } from './components/RuneDivider';
 
 export function PillarsSection() {
   return (
     <section className="py-24 px-6">
+      <RuneDivider rune="ᛏ" />
       <div className="max-w-6xl mx-auto">
         <motion.h2
           className="font-[Cormorant] text-4xl md:text-5xl font-bold text-center mb-16 text-norse-text"
