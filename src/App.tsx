@@ -20,6 +20,7 @@ const ThreadPage = lazy(() => import('./pages/ThreadPage').then(module => ({ def
 const TagPage = lazy(() => import('./pages/TagPage').then(module => ({ default: module.TagPage })));
 const GalleryPage = lazy(() => import('./pages/GalleryPage').then(module => ({ default: module.GalleryPage })));
 const NewThreadPage = lazy(() => import('./pages/NewThreadPage').then(module => ({ default: module.NewThreadPage })));
+const LandingPage = lazy(() => import('./pages/Landing/LandingPage').then(module => ({ default: module.LandingPage })));
 
 function LoadingSpinner() {
   return (
@@ -37,7 +38,8 @@ function App() {
           <Layout>
             <Suspense fallback={<LoadingSpinner />}>
               <Routes>
-                <Route path="/" element={<HomePage />} />
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/home" element={<HomePage />} />
                 <Route path="/servers" element={<ServersPage />} />
                 <Route path="/wiki" element={<WikiPage />} />
                 <Route path="/community" element={<CommunityPage />} />
